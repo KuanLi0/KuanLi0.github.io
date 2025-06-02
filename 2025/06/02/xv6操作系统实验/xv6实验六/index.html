@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>xv6实验六 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Hexo">
+  <meta name="description" content="xv6实验六 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:type" content="article">
@@ -58,7 +58,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -401,18 +401,49 @@
 
     </div>
     <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
+        <div class="semicircle" data-title="Toggle full screen shortcut key s">
             <div class="brackets first"><</div>
             <div class="brackets">&gt;</div>
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-xv6操作系统实验/xv6实验六" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%B6%E8%90%BD%E9%98%81"><span class="toc-text">关于叶落阁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
+        <h1 class="article-title">xv6实验六</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2025-06-02 16:58:41'>2025-06-02 16:58</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Implement-copy-on-write-hard"><span class="toc-text">Implement copy-on write (hard)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99PTE%E5%A2%9E%E5%8A%A0%E6%96%B0%E7%9A%84%E6%A0%87%E5%BF%97"><span class="toc-text">给PTE增加新的标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9uvmcopy"><span class="toc-text">修改uvmcopy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86usertrap"><span class="toc-text">处理usertrap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E9%A1%B5%E7%9A%84%E7%AE%A1%E7%90%86"><span class="toc-text">物理页的管理</span></a></li></ol></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -425,33 +456,194 @@
     }
 </style>
 </div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1><h2 id="对博客的理解"><a href="#对博客的理解" class="headerlink" title="对博客的理解"></a>对博客的理解</h2><p>喜欢写Blog的人，会经历三个阶段。</p>
-<blockquote>
-<p>第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
-</blockquote>
-<blockquote>
-<p>第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
-</blockquote>
-<blockquote>
-<p>第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
-</blockquote>
-<p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
-<p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
-<h2 id="关于叶落阁"><a href="#关于叶落阁" class="headerlink" title="关于叶落阁"></a>关于叶落阁</h2><p><strong>叶落阁</strong> 是阁主的个人站。</p>
-<p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
-<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
-<h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>这个博客通过 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 生成，部署在 <a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>主题 <a target="_blank" rel="noopener" href="https://github.com/yelog/hexo-theme-3-hexo">3-hexo</a> 已经在github上开源</p>
-<p><code>3-hexo</code> 主题使用交流可以加 Q群: <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e8cf083cc097141eaf323396f1766809b8e90ff00c67bb441898f672892f6904"><img data-ignore border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="3-hexo使用交流" title="3-hexo使用交流"></a></p>
-<p>主要功能：</p>
-<ul>
-<li>搜索支持文章标题、标签(#标签)、作者(@作者)</li>
-<li>pad&#x2F;手机等移动端适配</li>
-<li>页面全局快捷键 <a target="_blank" rel="noopener" href='http://yelog.org/2017/03/24/3-hexo-shortcuts/'>3-hexo快捷键说明</a></li>
-</ul>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>copy-on-write (COW) fork()的目标是推迟到子进程实际需要物理内存拷贝时再进行分配和复制物理内存页面。</p>
+<p>COW fork()只为子进程创建一个页表，用户内存的PTE指向父进程的物理页。COW fork()将父进程和子进程中的所有用户PTE标记为不可写。当任一进程试图写入其中一个COW页时，CPU将强制产生页面错误。内核页面错误处理程序检测到这种情况将为出错进程分配一页物理内存，将原始页复制到新页中，并修改出错进程中的相关PTE指向新的页面，将PTE标记为可写。当页面错误处理程序返回时，用户进程将能够写入其页面副本。</p>
+<p>COW fork()将使得释放用户内存的物理页面变得更加棘手。给定的物理页可能会被多个进程的页表引用，并且只有在最后一个引用消失时才应该被释放。</p>
+<h2 id="Implement-copy-on-write-hard"><a href="#Implement-copy-on-write-hard" class="headerlink" title="Implement copy-on write (hard)"></a>Implement copy-on write (hard)</h2><h3 id="给PTE增加新的标志"><a href="#给PTE增加新的标志" class="headerlink" title="给PTE增加新的标志"></a>给PTE增加新的标志</h3><p>首先给pte增加一个新的标志位，代表这个页是否是写时复制页。即PTE_COW.在kernel&#x2F;risc-v.h中添加</p>
+<pre><code class="language-C++">#define PTE_V (1L &lt;&lt; 0) // valid
+#define PTE_R (1L &lt;&lt; 1)
+#define PTE_W (1L &lt;&lt; 2)
+#define PTE_X (1L &lt;&lt; 3)
+#define PTE_U (1L &lt;&lt; 4) // 1 -&gt; user can access
+#define PTE_COW (1L &lt;&lt; 8) 
+</code></pre>
+<h3 id="修改uvmcopy"><a href="#修改uvmcopy" class="headerlink" title="修改uvmcopy"></a>修改uvmcopy</h3><p>父进程使用fork创建子进程时，会调用uvmcopy。把父进程映射的物理页全都复制一份新的给子进程。写时复制是写的时候才复制，所以这里去掉复制的功能，只给对应的页加上PTE_COW标志位。这里原本父进程中只读的页，不做修改，也就是说，只读的页在父进程和子进程中都是共享的。只有原本是可写的页做修改。</p>
+<p>在vm.c中：</p>
+<pre><code class="language-C++">int
+uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
+&#123;
+  pte_t *pte;
+  uint64 pa, i;
+  uint flags;
+  // char *mem;
 
-        </article>
-        
-        
+  for(i = 0; i &lt; sz; i += PGSIZE)&#123;
+    if((pte = walk(old, i, 0)) == 0)
+      panic(&quot;uvmcopy: pte should exist&quot;);
+    if((*pte &amp; PTE_V) == 0)
+      panic(&quot;uvmcopy: page not present&quot;);
+    pa = PTE2PA(*pte);
+    flags = PTE_FLAGS(*pte);
+
+    //remove all PTE_W of PTE of father process, and set PTE_COW. Indicates that the page is a cow
+    if(*pte &amp; PTE_W) 
+        *pte = (*pte &amp; ~ PTE_W) | PTE_COW;
+    
+    flags = PTE_FLAGS(*pte); // get current father process flag
+
+    //map the physical pages mapped in the parent process to the child process
+    if(mappages(new, i, PGSIZE, (uint64)pa, flags) != 0)
+      goto err;
+    
+    lk_krefpage((void*) pa);
+
+
+    // remove the code for copying memory
+    // if((mem = kalloc()) == 0)
+    //   goto err;
+    // memmove(mem, (char*)pa, PGSIZE);
+    // if(mappages(new, i, PGSIZE, (uint64)mem, flags) != 0)&#123;
+    //   kfree(mem);
+    //   goto err;
+    // &#125;
+  &#125;
+  return 0;
+
+ err:
+  uvmunmap(new, 0, i / PGSIZE, 1);
+  return -1;
+&#125;
+</code></pre>
+<p>lk_krefpage函数是使物理页引用次数+1.为了避免内存泄漏，多个进程映射同一个物理页面的时候，记录这个物理页的引用次数，调用kfree释放物理页的时候，只对引用次数-1，当引用次数为0的时候，才释放物理页。</p>
+<p>现在使用fork函数不会复制物理内存了，父进程和子进程都映射到了同一片物理内存，且所有的页都是不可写的状态。这个时候某一个进程尝试一个写操作就会出现页面错误被usertrap捕获。接下来修改usertrap函数，实现在修改页的时候，才创建和映射新的物理页。</p>
+<h3 id="处理usertrap"><a href="#处理usertrap" class="headerlink" title="处理usertrap"></a>处理usertrap</h3><pre><code class="language-c++"> else if((r_scause() == 13 || r_scause() == 15) &amp;&amp; lk_uvmcheckcowpage(r_stval())) &#123;
+    if (lk_uvmcowcopy(r_stval()) == -1)
+          p-&gt;killed = 1;
+  &#125;
+</code></pre>
+<pre><code class="language-C++">int lk_uvmcowcopy(uint64 va) &#123;
+  pte_t* pte;
+  struct proc* p = myproc();
+
+  if ((pte = walk(p-&gt;pagetable, va, 0)) == 0)     //获取虚拟地址的页表项
+      panic(&quot;uvmcowcopy: walk&quot;);
+
+  uint64 pa = PTE2PA(*pte);                     //获取映射的物理地址
+  uint64 new = (uint64)lk_kcopy_n_deref((void*)pa);  //获取新分配的物理页（如果原本的物理页引用数为1，则获取到的还是原本的物理页）
+  if (new == 0)       //内存不足的情况
+      return -1;
+
+  //修改新的映射，恢复写权限，清除COW标志
+  uint64 flags = (PTE_FLAGS(*pte) | PTE_W) &amp; ~PTE_COW;
+  uvmunmap(p-&gt;pagetable, PGROUNDDOWN(va), 1, 0);              //清除旧的映射
+  if (mappages(p-&gt;pagetable, va, 1, new, flags) == -1)        //新的映射
+      panic(&quot;uvmcowcopy: mappages&quot;);
+
+  return 0;
+&#125;
+</code></pre>
+<p>这里有一个lk_kcopy_n_deref函数，实现思路是，当有进程通过COW复制新的物理页时，把原本的物理页的引用数-1,返回新创建的物理页地址。如果原本的物理页时1，那么可以直接使用这个物理页了，因为也没有其他进程使用这个物理页了。</p>
+<pre><code class="language-C++">int lk_uvmcheckcowpage(uint64 va) &#123;
+  pte_t* pte;
+  struct proc* p = myproc();
+
+  return va &lt; p-&gt;sz
+      &amp;&amp; ((pte = walk(p-&gt;pagetable, va, 0)) != 0)
+      &amp;&amp; (*pte &amp; PTE_V)
+      &amp;&amp; (*pte &amp; PTE_COW);
+  //地址在进程内存范围内  &amp;&amp;  地址有映射  &amp;&amp; 地址有效且是COW页
+&#125;
+</code></pre>
+<p>到此已经完成了大致的逻辑，接下来需要对页的声明周期进行管理。</p>
+<h3 id="物理页的管理"><a href="#物理页的管理" class="headerlink" title="物理页的管理"></a>物理页的管理</h3><p>一个物理页首先会被父进程使用kalloc创建，fork的时候，新创建子进程的时候会调用lk_krefpage声明对应的物理页的引用加1。当尝试修改父进程和子进程中的页时，lk_kcopy_n_deref负责将想要修改的页复制到独立的副本，并且记录解除旧的物理页映射（-1）。最后kfree保证只有在所有的引用者都释放该物理页的映射时，才释放回收该物理页。</p>
+<p>在kalloc.c中定义宏</p>
+<pre><code class="language-C++">#define PA2PGREF_ID(p) (((p)-KERNBASE)/PGSIZE)      // 由物理地址获取物理页id
+#define PGREF_MAX_ENTRIES PA2PGREF_ID(PHYSTOP)      // 物理页数上限
+
+int pageref[PGREF_MAX_ENTRIES];         //每个物理页的引用数 数组（pageref[i]表示第i个物理页的引用数）
+struct spinlock pgreflock;              //用于pageref数组的锁，防止竞态条件引起内存泄漏
+
+#define PA2PGREF(p) pageref[PA2PGREF_ID((uint64)(p))]       //获取地址对应物理页引用数
+</code></pre>
+<p>初始化锁：</p>
+<pre><code class="language-C++">void
+kinit()
+&#123;
+    initlock(&amp;kmem.lock, &quot;kmem&quot;);
+    initlock(&amp;pgreflock, &quot;pgref&quot;);      //初始化锁
+    freerange(end, (void*)PHYSTOP);
+&#125;
+</code></pre>
+<p>修改kalloc和kfree</p>
+<pre><code class="language-C++">void
+kfree(void *pa)
+&#123;
+  struct run *r;
+
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa &lt; end || (uint64)pa &gt;= PHYSTOP)
+    panic(&quot;kfree&quot;);
+
+  //当页面的引用数&lt;=0的时候释放页面
+  acquire(&amp;pgreflock);
+  if (--PA2PGREF(pa) &lt;= 0) &#123;
+    // Fill with junk to catch dangling refs.
+    memset(pa, 1, PGSIZE);
+
+    r = (struct run*)pa;
+
+    acquire(&amp;kmem.lock);
+    r-&gt;next = kmem.freelist;
+    kmem.freelist = r;
+    release(&amp;kmem.lock);
+  &#125;
+  release(&amp;pgreflock);
+&#125;
+</code></pre>
+<p>实现lk_kcopy_n_deref</p>
+<pre><code class="language-c++">void* kama_kcopy_n_deref(void* pa) &#123;
+    acquire(&amp;pgreflock);
+
+    //当前物理页的引用数为1，无需分配新的物理页
+    if (PA2PGREF(pa) &lt;= 1) &#123;
+        release(&amp;pgreflock);
+        return pa;
+    &#125;
+
+    //分配新的物理页，并把旧页中的数据复制到新页
+    uint64 newpa = (uint64)kalloc();
+    if (newpa == 0) &#123;           //内存不够了
+        release(&amp;pgreflock);
+        return 0;
+    &#125;
+    memmove((void*)newpa, (void*)pa, PGSIZE);
+
+    //旧页引用数-1
+    PA2PGREF(pa)--;
+
+    release(&amp;pgreflock);
+    return (void*)newpa;
+&#125;
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -460,11 +652,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="Toggle full screen shortcut key s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="Toggle full screen shortcut key s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 </body>

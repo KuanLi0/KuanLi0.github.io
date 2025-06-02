@@ -6,17 +6,19 @@
   <meta name="keywords" content="">
   <meta name="description" content="xv6实验二 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
+<meta name="description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xv6源码剖析">
-<meta property="og:url" content="http://example.com/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/index.html">
+<meta property="og:title" content="xv6实验九">
+<meta property="og:url" content="http://example.com/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B9%9D/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
+<meta property="og:description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-03-09T06:53:18.000Z">
-<meta property="article:modified_time" content="2025-03-09T11:33:34.806Z">
+<meta property="og:image" content="http://example.com/%5Btypora-user-images%5D(..%5Ctypora-user-images)%5Cimage-20250515112755648.png">
+<meta property="article:published_time" content="2025-06-02T09:01:28.000Z">
+<meta property="article:modified_time" content="2025-06-02T09:02:12.311Z">
 <meta property="article:author" content="Li Kuan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%5Btypora-user-images%5D(..%5Ctypora-user-images)%5Cimage-20250515112755648.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -213,25 +215,10 @@
     <li>
         <div class="all active" data-rel="All">All
             
-                <small>(7)</small>
+                <small>(10)</small>
             
         </div>
     </li>
-    
-        
-            
-                
-    <li>
-        <div data-rel="工具">
-            
-            工具
-            <small>(1)</small>
-        </div>
-        
-    </li>
-
-            
-        
     
         
             
@@ -240,7 +227,7 @@
         <div data-rel="操作系统">
             
             操作系统
-            <small>(5)</small>
+            <small>(9)</small>
         </div>
         
     </li>
@@ -261,7 +248,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="7">
+<input type="hidden" id="yelog_site_posts_number" value="10">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -316,7 +303,52 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B9%9D/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验九">xv6实验九</span>
+            <span class="post-date" title="2025-06-02 17:01:28">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%85%AB/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验八">xv6实验八</span>
+            <span class="post-date" title="2025-06-02 17:00:54">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%83/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验七">xv6实验七</span>
+            <span class="post-date" title="2025-06-02 16:59:12">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%85%AD/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验六">xv6实验六</span>
+            <span class="post-date" title="2025-06-02 16:58:27">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%BA%94/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验五">xv6实验五</span>
+            <span class="post-date" title="2025-06-02 16:57:55">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/03/09/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6源码剖析">xv6源码剖析</span>
@@ -325,25 +357,16 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/03/01/test/"
+           href="/2025/01/20/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%9B%9B/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="test">test</span>
-            <span class="post-date" title="2025-03-01 14:41:07">2025/03/01</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2025/02/24/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2025-02-24 19:29:16">2025/02/24</span>
+            <span class="post-title" title="xv6实验四">xv6实验四</span>
+            <span class="post-date" title="2025-01-20 16:57:02">2025/01/20</span>
         </a>
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/10/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/"
+           href="/2025/01/10/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验三">xv6实验三</span>
@@ -352,7 +375,7 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/06/xv6%E5%AE%9E%E9%AA%8C%E4%BA%8C/"
+           href="/2025/01/06/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%BA%8C/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验二">xv6实验二</span>
@@ -361,20 +384,11 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/02/xv6%E5%AE%9E%E9%AA%8C%E4%B8%80/"
+           href="/2025/01/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%80/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验一">xv6实验一</span>
             <span class="post-date" title="2025-01-02 16:36:51">2025/01/02</span>
-        </a>
-        
-        
-        <a  class="All 工具 "
-           href="/2017/03/23/index/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="3-hexo使用说明">3-hexo使用说明</span>
-            <span class="post-date" title="2017-03-23 15:13:47">2017/03/23</span>
         </a>
         
         <div id="no-item-tips">
@@ -395,7 +409,7 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-xv6实验二" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-xv6操作系统实验/xv6实验二" class="article article-type-post" itemscope itemprop="blogPost">
     
         <h1 class="article-title">xv6实验二</h1>
     

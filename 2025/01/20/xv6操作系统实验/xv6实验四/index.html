@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>xv6实验四 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Hexo">
+  <meta name="description" content="xv6实验四 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:type" content="article">
@@ -58,7 +58,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -401,18 +401,57 @@
 
     </div>
     <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
+        <div class="semicircle" data-title="Toggle full screen shortcut key s">
             <div class="brackets first"><</div>
             <div class="brackets">&gt;</div>
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-xv6操作系统实验/xv6实验四" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%B6%E8%90%BD%E9%98%81"><span class="toc-text">关于叶落阁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
+        <h1 class="article-title">xv6实验四</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="操作系统">操作系统</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2025-06-02 16:57:47'>2025-01-20 16:57</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-text">基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#risc-v%E7%9A%84%E9%99%B7%E5%85%A5%E6%9C%BA%E5%88%B6"><span class="toc-text">risc-v的陷入机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E9%99%B7%E5%85%A5"><span class="toc-text">从用户空间陷入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Backtrace"><span class="toc-text">Backtrace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Alarm"><span class="toc-text">Alarm</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-text">增加进程的成员变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0sys-sigalarm%E5%92%8Csys-sigreturn%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">实现sys_sigalarm和sys_sigreturn系统调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8usertrap%E4%B8%AD%E5%AE%9E%E7%8E%B0%E4%B8%AD%E6%96%AD%E8%A7%A6%E5%8F%91%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-text">在usertrap中实现中断触发的代码</span></a></li></ol></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -425,33 +464,128 @@
     }
 </style>
 </div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1><h2 id="对博客的理解"><a href="#对博客的理解" class="headerlink" title="对博客的理解"></a>对博客的理解</h2><p>喜欢写Blog的人，会经历三个阶段。</p>
-<blockquote>
-<p>第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
-</blockquote>
-<blockquote>
-<p>第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
-</blockquote>
-<blockquote>
-<p>第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
-</blockquote>
-<p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
-<p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
-<h2 id="关于叶落阁"><a href="#关于叶落阁" class="headerlink" title="关于叶落阁"></a>关于叶落阁</h2><p><strong>叶落阁</strong> 是阁主的个人站。</p>
-<p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
-<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
-<h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>这个博客通过 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 生成，部署在 <a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>主题 <a target="_blank" rel="noopener" href="https://github.com/yelog/hexo-theme-3-hexo">3-hexo</a> 已经在github上开源</p>
-<p><code>3-hexo</code> 主题使用交流可以加 Q群: <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e8cf083cc097141eaf323396f1766809b8e90ff00c67bb441898f672892f6904"><img data-ignore border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="3-hexo使用交流" title="3-hexo使用交流"></a></p>
-<p>主要功能：</p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="risc-v的陷入机制"><a href="#risc-v的陷入机制" class="headerlink" title="risc-v的陷入机制"></a>risc-v的陷入机制</h2><p>每一个risc-v寄存器都有一组控制寄存器，内核通过向这些寄存器写入内容来告诉CPU如何处理陷阱：</p>
 <ul>
-<li>搜索支持文章标题、标签(#标签)、作者(@作者)</li>
-<li>pad&#x2F;手机等移动端适配</li>
-<li>页面全局快捷键 <a target="_blank" rel="noopener" href='http://yelog.org/2017/03/24/3-hexo-shortcuts/'>3-hexo快捷键说明</a></li>
+<li>stvec：内核在在这里写入其陷阱处理的程序的地址；risc-v处理器跳转到这里执行。</li>
+<li>sepc：发生陷阱时，risc-v会在这里保存pc，sret指令会将sepc复制到pc，进行返回</li>
+<li>scause：描述陷阱原因</li>
+<li><code>sscratch</code>：内核在这里放置了一个值，这个值在陷阱处理程序一开始就会派上用场。</li>
+<li><code>sstatus</code>：其中的<strong>SIE</strong>位控制设备中断是否启用。如果内核清空<strong>SIE</strong>，RISC-V将推迟设备中断，直到内核重新设置<strong>SIE</strong>。<strong>SPP</strong>位指示陷阱是来自用户模式还是管理模式，并控制<code>sret</code>返回的模式。</li>
 </ul>
+<p>上述寄存器用于在管理模式下处理陷阱，在用户模式下不能操作。</p>
+<p>在陷入时，CPU不会切换内核页表，也不会切换内核栈，也不会保存除了pc之外的任何寄存器，内核软件必须执行这些任务。这样的目的是减少一些不必要的页表切换，提高灵活性。</p>
+<h2 id="从用户空间陷入"><a href="#从用户空间陷入" class="headerlink" title="从用户空间陷入"></a>从用户空间陷入</h2><p>来自用户代码的陷阱比来自内核的陷阱更具挑战性，因为<code>satp</code>指向不映射内核的用户页表，栈指针可能包含无效甚至恶意的值。当发生trap时，首先会切换到uservec函数中。由于RISC-V硬件在陷阱期间不会切换页表，所以用户页表必须包括<code>uservec</code>（<strong>stvec</strong>寄存器指向的函数）的映射。<code>uservec</code>必须切换<code>satp</code>以指向内核页表；为了在切换后继续执行指令，<code>uservec</code>必须在内核页表中与用户页表中映射相同的地址。xv6使用包含<code>uservec</code>的蹦床页面（trampoline page）来满足这些约束。xv6将蹦床页面映射到内核页表和每个用户页表中<strong>相同的虚拟地址</strong>。这个虚拟地址是<code>TRAMPOLINE</code>。</p>
+<p>蹦床内容在***trampoline.S***中设置，并且（当执行用户代码时）<code>stvec</code>设置为<code>uservec</code> 。uservec负责寄存器的保存。但是<code>uservec</code>需要能够修改一些寄存器，以便设置<code>satp</code>并生成保存寄存器的地址。RISC-V以<code>sscratch</code>寄存器的形式提供了帮助。<code>uservec</code>开始时的<code>csrrw</code>指令交换了<code>a0</code>和<code>sscratch</code>的内容。现在用户代码的<code>a0</code>被保存了；<code>uservec</code>有一个寄存器（<code>a0</code>）可以使用；<code>a0</code>包含内核以前放在<code>sscratch</code>中的值。因为<code>satp</code>仍然指向用户页表，所以<code>uservec</code>需要将陷阱帧映射到用户地址空间中。每当创建一个进程时，xv6就为该进程的陷阱帧分配一个页面，并安排它始终映射在用户虚拟地址<code>TRAPFRAME</code>，该地址就在<code>TRAMPOLINE</code>下面。尽管使用物理地址，该进程的<code>p-&gt;trapframe</code>仍指向陷阱帧，这样内核就可以通过内核页表使用它。</p>
+<p>陷阱帧包含指向当前进程内核栈的指针、当前CPU的<code>hartid</code>、<code>usertrap</code>的地址和内核页表的地址。<code>uservec</code>取得这些值，将<code>satp</code>切换到内核页表，并调用<code>usertrap</code>。</p>
+<p><code>usertrap</code>的任务是确定陷阱的原因，处理并返回(*<strong>kernel&#x2F;trap.c*</strong>:37)。如上所述，它首先改变<code>stvec</code>，这样内核中的陷阱将由<code>kernelvec</code>处理。它保存了<code>sepc</code>（保存的用户程序计数器），再次保存是因为<code>usertrap</code>中可能有一个进程切换，可能导致<code>sepc</code>被覆盖。如果陷阱来自系统调用，<code>syscall</code>会处理它；如果是设备中断，<code>devintr</code>会处理；否则它是一个异常，内核会杀死错误进程。系统调用路径在保存的用户程序计数器<code>pc</code>上加4，因为在系统调用的情况下，RISC-V会留下指向<code>ecall</code>指令的程序指针（返回后需要执行<code>ecall</code>之后的下一条指令）。在退出的过程中，<code>usertrap</code>检查进程是已经被杀死还是应该让出CPU（如果这个陷阱是计时器中断）。</p>
+<p>返回用户空间的第一步是调用<code>usertrapret</code> (*<strong>kernel&#x2F;trap.c*</strong>:90)。该函数设置RISC-V控制寄存器，<strong>为将来来自用户空间的陷阱做准备</strong>。这涉及到将<code>stvec</code>更改为指向<code>uservec</code>，准备<code>uservec</code>所依赖的陷阱帧字段，并将<code>sepc</code>设置为之前保存的用户程序计数器。最后，<code>usertrapret</code>在用户和内核页表中都映射的蹦床页面上调用<code>userret</code>；原因是<code>userret</code>中的汇编代码会切换页表。</p>
+<h1 id="Backtrace"><a href="#Backtrace" class="headerlink" title="Backtrace"></a>Backtrace</h1><p>该实验是实现一个打印曾经调用过的函数地址，比较简单。</p>
+<pre><code class="language-C">void printbt() &#123;
+  uint64 fp = r_fp();
+  printf(&quot;backtrace:\n&quot;);
+  while (PGROUNDDOWN(fp) != PGROUNDUP(fp))
+  &#123;
+    /* code */
+    uint64 ra = *(uint64*)(fp - 8); //return address
+    printf(&quot;%p\n&quot;, ra);
+    fp = *(uint64*)(fp - 16);
+  &#125;
+  
+&#125;
+</code></pre>
+<p>该函数主要使用PGROUNDDOWN和PGROUNDUP这两个宏来，当前的fp是否在跃出边界。返回地址存在fp（栈帧的基址）寄存器中-8的位置，上一个栈帧的地址存在fp-16的位置。</p>
+<h1 id="Alarm"><a href="#Alarm" class="headerlink" title="Alarm"></a>Alarm</h1><p>这项练习要实现定期的警报,用来模拟用户级的异常处理。在给的测试用例中（user&#x2F;alarmtest.c），会调用sigalarm(2, periodic)函数，使内核每2个ticks就调用periodic函数，该函数会打印“alarm！”字符。通过修改内核，使得内核可以调转到位于用户空间的处理函数即periodic，他将打印“alarm！”字符。</p>
+<p>根据xv6的trap原理，不加alarm的流程为（以系统调用为例）：用户程序会跳转到trapline中的uservec函数，这里会将pc值保存到sepc寄存器，并将上下文保存到trapframe，然后跳转到usertrap函数中，在该函数中，会将sepc的值保存到p-&gt;trapframe-&gt;epc的数据结构中，并加4。然后usertrap根据trap类型去执行不同的函数。执行完usertrap函数最后会调用usertrapret函数，在该函数中，会取保存在当前进程的trapframe中的epc写入到pc寄存器中。最后跳转到userret函数中，恢复寄存器，在通过sret指令返回到ecall的下一条指令。</p>
+<p>但是，如果要加alarm功能，需要对上面的步骤进行修改，具体如下：</p>
+<h2 id="增加进程的成员变量"><a href="#增加进程的成员变量" class="headerlink" title="增加进程的成员变量"></a>增加进程的成员变量</h2><p>在proc结构体中，增加成员变量，并且对这些字段进行初始化和释放</p>
+<pre><code class="language-c++">  int alarm_intervel;          //alarm cycle, 0 represents prohibit alarm.
+  void(*lk_alarm_handle)();    //alarm callback handle function.
+  int lk_alarm_ticks;          //current alarm signals nums.
+  struct trapframe* lk_alarm_trapframe; //process&#39;s trap frame when alarm interrupt.
+  int lk_alarm_goingoff;       //Is there already a clock interrupt executing and not yet returned.
+</code></pre>
+<blockquote>
+<p>[!NOTE]</p>
+<p>按照常规来说，只需要添加报警间隔和报警处理函数以及两次报警间的计数即可。但是考虑到handle函数可能会更改用户寄存器，所以需要一个陷阱帧进行提前保存，并且还要防止在alarm_handle函数中再次调用alarm_handle函数，导致陷阱帧被覆盖，所以需要设置一个变量标记是否已经有一个时钟中断正在运行。</p>
+</blockquote>
+<h3 id="实现sys-sigalarm和sys-sigreturn系统调用"><a href="#实现sys-sigalarm和sys-sigreturn系统调用" class="headerlink" title="实现sys_sigalarm和sys_sigreturn系统调用"></a>实现sys_sigalarm和sys_sigreturn系统调用</h3><p>sys_sigalarm主要获取参数，并调用处理函数。</p>
+<pre><code class="language-c++">//kernel/sysproc.c
+uint64 sys_sigalarm(void) &#123;
+  int n;
+  uint64 fn;
+  if (argint(0, &amp;n) &lt; 0)
+    return -1;
+  if (argaddr(1, &amp;fn) &lt; 0)
+    return -1;
 
-        </article>
-        
-        
+  return lk_sigalarm(n, (void(*) ()) (fn));
+&#125;
+
+uint64 sys_sigreturn(void) &#123;
+  return lk_sigreturn();
+&#125;
+</code></pre>
+<blockquote>
+<p>[!NOTE]</p>
+<p>sys_sigalarm和lk_sigalarm函数只是一层包装，真正的实现在下面两个函数。</p>
+</blockquote>
+<p>在trap.c中实现具体的代码：</p>
+<pre><code class="language-c++">//set the clock related properties in the process
+int lk_sigalarm(int ticks, void(*handle)()) &#123;
+  struct proc* p = myproc();
+  p-&gt;alarm_intervel = ticks;
+  p-&gt;lk_alarm_handle = handle;
+  p-&gt;lk_alarm_ticks = ticks;
+  return 0;
+&#125;
+
+//restore the process to the state before the alarm interrupt 
+int lk_sigreturn() &#123;
+  struct proc* p = myproc();
+  *p-&gt;trapframe = *p-&gt;lk_alarm_trapframe;
+  p-&gt;lk_alarm_goingoff = 0;
+  return 0;
+&#125;
+</code></pre>
+<blockquote>
+<p>[!NOTE]</p>
+<p>注意：在lk_sigalarm中设置ticks以及中断处理函数的地址。在lk_sigreturn函数中，恢复陷阱帧。</p>
+</blockquote>
+<h3 id="在usertrap中实现中断触发的代码"><a href="#在usertrap中实现中断触发的代码" class="headerlink" title="在usertrap中实现中断触发的代码"></a>在usertrap中实现中断触发的代码</h3><p>在usertrap中实现中断触发的代码，主要将pc设置为用户自定义的处理函数</p>
+<pre><code class="language-c++"> // give up the CPU if this is a timer interrupt.
+  if(which_dev == 2) &#123;
+    if(p-&gt;alarm_intervel != 0 &amp;&amp; --p-&gt;lk_alarm_ticks &lt;= 0 &amp;&amp; p-&gt;lk_alarm_goingoff == 0) &#123;
+      //make sure the click is set &amp;&amp; the click countdown ends &amp;&amp; no other clocks are running
+
+      p-&gt;lk_alarm_ticks = p-&gt;alarm_intervel; //reset the clock countdwon 
+      *p-&gt;lk_alarm_trapframe = *p-&gt;trapframe; //save current trapframe
+      p-&gt;trapframe-&gt;epc = (uint64)p-&gt;lk_alarm_handle; //jump clock callback function
+      p-&gt;lk_alarm_goingoff = 1; //mark that there is a clock running
+    &#125;
+    yield();
+  &#125;
+</code></pre>
+<p>该实验的函数调用流程大概是sys_sigalarm-&gt;lk_sigalarm(设置参数)-&gt;usertrap(保存陷阱帧)-&gt;handle（用户自定义函数）-&gt; lk_sigreturn(恢复陷阱帧)。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -460,11 +594,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="Toggle full screen shortcut key s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="Toggle full screen shortcut key s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 </body>

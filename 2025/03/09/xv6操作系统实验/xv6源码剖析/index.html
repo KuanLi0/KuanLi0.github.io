@@ -2,21 +2,23 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>xv6源码剖析 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Hexo">
+  <meta name="description" content="xv6源码剖析 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
+<meta name="description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xv6源码剖析">
-<meta property="og:url" content="http://example.com/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/index.html">
+<meta property="og:title" content="xv6实验九">
+<meta property="og:url" content="http://example.com/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B9%9D/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
+<meta property="og:description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-03-09T06:53:18.000Z">
-<meta property="article:modified_time" content="2025-03-09T11:33:34.806Z">
+<meta property="og:image" content="http://example.com/%5Btypora-user-images%5D(..%5Ctypora-user-images)%5Cimage-20250515112755648.png">
+<meta property="article:published_time" content="2025-06-02T09:01:28.000Z">
+<meta property="article:modified_time" content="2025-06-02T09:02:12.311Z">
 <meta property="article:author" content="Li Kuan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%5Btypora-user-images%5D(..%5Ctypora-user-images)%5Cimage-20250515112755648.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -56,7 +58,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -213,25 +215,10 @@
     <li>
         <div class="all active" data-rel="All">All
             
-                <small>(7)</small>
+                <small>(10)</small>
             
         </div>
     </li>
-    
-        
-            
-                
-    <li>
-        <div data-rel="工具">
-            
-            工具
-            <small>(1)</small>
-        </div>
-        
-    </li>
-
-            
-        
     
         
             
@@ -240,7 +227,7 @@
         <div data-rel="操作系统">
             
             操作系统
-            <small>(5)</small>
+            <small>(9)</small>
         </div>
         
     </li>
@@ -261,7 +248,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="7">
+<input type="hidden" id="yelog_site_posts_number" value="10">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -316,7 +303,52 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B9%9D/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验九">xv6实验九</span>
+            <span class="post-date" title="2025-06-02 17:01:28">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%85%AB/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验八">xv6实验八</span>
+            <span class="post-date" title="2025-06-02 17:00:54">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%83/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验七">xv6实验七</span>
+            <span class="post-date" title="2025-06-02 16:59:12">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%85%AD/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验六">xv6实验六</span>
+            <span class="post-date" title="2025-06-02 16:58:27">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%BA%94/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验五">xv6实验五</span>
+            <span class="post-date" title="2025-06-02 16:57:55">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/03/09/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6源码剖析">xv6源码剖析</span>
@@ -325,25 +357,16 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/03/01/test/"
+           href="/2025/01/20/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%9B%9B/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="test">test</span>
-            <span class="post-date" title="2025-03-01 14:41:07">2025/03/01</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2025/02/24/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2025-02-24 19:29:16">2025/02/24</span>
+            <span class="post-title" title="xv6实验四">xv6实验四</span>
+            <span class="post-date" title="2025-01-20 16:57:02">2025/01/20</span>
         </a>
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/10/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/"
+           href="/2025/01/10/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验三">xv6实验三</span>
@@ -352,7 +375,7 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/06/xv6%E5%AE%9E%E9%AA%8C%E4%BA%8C/"
+           href="/2025/01/06/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%BA%8C/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验二">xv6实验二</span>
@@ -361,20 +384,11 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/02/xv6%E5%AE%9E%E9%AA%8C%E4%B8%80/"
+           href="/2025/01/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%80/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验一">xv6实验一</span>
             <span class="post-date" title="2025-01-02 16:36:51">2025/01/02</span>
-        </a>
-        
-        
-        <a  class="All 工具 "
-           href="/2017/03/23/index/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="3-hexo使用说明">3-hexo使用说明</span>
-            <span class="post-date" title="2017-03-23 15:13:47">2017/03/23</span>
         </a>
         
         <div id="no-item-tips">
@@ -387,18 +401,57 @@
 
     </div>
     <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
+        <div class="semicircle" data-title="Toggle full screen shortcut key s">
             <div class="brackets first"><</div>
             <div class="brackets">&gt;</div>
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-xv6操作系统实验/xv6源码剖析" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%B6%E8%90%BD%E9%98%81"><span class="toc-text">关于叶落阁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
+        <h1 class="article-title">xv6源码剖析</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="操作系统">操作系统</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2025-03-09 19:33:34'>2025-03-09 14:53</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81xv%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%90%AF%E5%8A%A8"><span class="toc-text">1、xv系统的启动</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#entry%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2"><span class="toc-text">entry模式切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main%E5%92%8Cscheduler%E5%87%BD%E6%95%B0"><span class="toc-text">main和scheduler函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E9%83%A8%E5%88%86"><span class="toc-text">2、虚拟内存部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#kvminit%E5%87%BD%E6%95%B0"><span class="toc-text">kvminit函数</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -411,33 +464,31 @@
     }
 </style>
 </div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1><h2 id="对博客的理解"><a href="#对博客的理解" class="headerlink" title="对博客的理解"></a>对博客的理解</h2><p>喜欢写Blog的人，会经历三个阶段。</p>
-<blockquote>
-<p>第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
-</blockquote>
-<blockquote>
-<p>第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
-</blockquote>
-<blockquote>
-<p>第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
-</blockquote>
-<p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
-<p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
-<h2 id="关于叶落阁"><a href="#关于叶落阁" class="headerlink" title="关于叶落阁"></a>关于叶落阁</h2><p><strong>叶落阁</strong> 是阁主的个人站。</p>
-<p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
-<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
-<h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>这个博客通过 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 生成，部署在 <a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>主题 <a target="_blank" rel="noopener" href="https://github.com/yelog/hexo-theme-3-hexo">3-hexo</a> 已经在github上开源</p>
-<p><code>3-hexo</code> 主题使用交流可以加 Q群: <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e8cf083cc097141eaf323396f1766809b8e90ff00c67bb441898f672892f6904"><img data-ignore border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="3-hexo使用交流" title="3-hexo使用交流"></a></p>
-<p>主要功能：</p>
-<ul>
-<li>搜索支持文章标题、标签(#标签)、作者(@作者)</li>
-<li>pad&#x2F;手机等移动端适配</li>
-<li>页面全局快捷键 <a target="_blank" rel="noopener" href='http://yelog.org/2017/03/24/3-hexo-shortcuts/'>3-hexo快捷键说明</a></li>
-</ul>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>整个xv6系统是用qume这个软件去模拟的。</p>
+<h1 id="1、xv系统的启动"><a href="#1、xv系统的启动" class="headerlink" title="1、xv系统的启动"></a>1、xv系统的启动</h1><h2 id="entry模式切换"><a href="#entry模式切换" class="headerlink" title="entry模式切换"></a>entry模式切换</h2><p>首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：<br>主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到tp寄存器。最后，执行mret指令，切换模式，并跳转到main函数。</p>
+<h2 id="main和scheduler函数"><a href="#main和scheduler函数" class="headerlink" title="main和scheduler函数"></a>main和scheduler函数</h2><p>在main函数中，会进行一系列的初始化，还会初始化第一个用户进程，最后main函数会调用scheduler函数。和entry以及start函数不同，每一个进程都会调用scheduler函数，他会选择一个进程去运行。xv6为每个CPU核心运行一个scheduler()实例，各核心独立选择进程执行。当所有进程都不可运行时（found &#x3D;&#x3D; 0），调度器执行wfi（Wait for Interrupt），使CPU进入低功耗状态，直到中断发生（如定时器中断、设备中断）。</p>
+<h1 id="2、虚拟内存部分"><a href="#2、虚拟内存部分" class="headerlink" title="2、虚拟内存部分"></a>2、虚拟内存部分</h1><p>虚拟内存相关的代码写在kernel&#x2F;vm.c文件按中</p>
+<h2 id="kvminit函数"><a href="#kvminit函数" class="headerlink" title="kvminit函数"></a>kvminit函数</h2><p>kvminit函数主要功能是创建映射关系，将</p>
 
-        </article>
-        
-        
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -446,11 +497,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="Toggle full screen shortcut key s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="Toggle full screen shortcut key s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 </body>

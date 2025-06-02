@@ -2,21 +2,23 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>test | Hexo</title>
+  <title>xv6实验五 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="test | Hexo">
+  <meta name="description" content="xv6实验五 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
+<meta name="description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xv6源码剖析">
-<meta property="og:url" content="http://example.com/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/index.html">
+<meta property="og:title" content="xv6实验九">
+<meta property="og:url" content="http://example.com/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B9%9D/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
+<meta property="og:description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-03-09T06:53:18.000Z">
-<meta property="article:modified_time" content="2025-03-09T11:33:34.806Z">
+<meta property="og:image" content="http://example.com/%5Btypora-user-images%5D(..%5Ctypora-user-images)%5Cimage-20250515112755648.png">
+<meta property="article:published_time" content="2025-06-02T09:01:28.000Z">
+<meta property="article:modified_time" content="2025-06-02T09:02:12.311Z">
 <meta property="article:author" content="Li Kuan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%5Btypora-user-images%5D(..%5Ctypora-user-images)%5Cimage-20250515112755648.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -213,25 +215,10 @@
     <li>
         <div class="all active" data-rel="All">All
             
-                <small>(7)</small>
+                <small>(10)</small>
             
         </div>
     </li>
-    
-        
-            
-                
-    <li>
-        <div data-rel="工具">
-            
-            工具
-            <small>(1)</small>
-        </div>
-        
-    </li>
-
-            
-        
     
         
             
@@ -240,7 +227,7 @@
         <div data-rel="操作系统">
             
             操作系统
-            <small>(5)</small>
+            <small>(9)</small>
         </div>
         
     </li>
@@ -261,7 +248,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="7">
+<input type="hidden" id="yelog_site_posts_number" value="10">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -316,7 +303,52 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B9%9D/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验九">xv6实验九</span>
+            <span class="post-date" title="2025-06-02 17:01:28">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%85%AB/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验八">xv6实验八</span>
+            <span class="post-date" title="2025-06-02 17:00:54">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%83/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验七">xv6实验七</span>
+            <span class="post-date" title="2025-06-02 16:59:12">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%85%AD/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验六">xv6实验六</span>
+            <span class="post-date" title="2025-06-02 16:58:27">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/06/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%BA%94/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验五">xv6实验五</span>
+            <span class="post-date" title="2025-06-02 16:57:55">2025/06/02</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/03/09/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6源码剖析">xv6源码剖析</span>
@@ -325,25 +357,16 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/03/01/test/"
+           href="/2025/01/20/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E5%9B%9B/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="test">test</span>
-            <span class="post-date" title="2025-03-01 14:41:07">2025/03/01</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2025/02/24/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2025-02-24 19:29:16">2025/02/24</span>
+            <span class="post-title" title="xv6实验四">xv6实验四</span>
+            <span class="post-date" title="2025-01-20 16:57:02">2025/01/20</span>
         </a>
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/10/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/"
+           href="/2025/01/10/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验三">xv6实验三</span>
@@ -352,7 +375,7 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/06/xv6%E5%AE%9E%E9%AA%8C%E4%BA%8C/"
+           href="/2025/01/06/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%BA%8C/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验二">xv6实验二</span>
@@ -361,20 +384,11 @@
         
         
         <a  class="All 操作系统 "
-           href="/2025/01/02/xv6%E5%AE%9E%E9%AA%8C%E4%B8%80/"
+           href="/2025/01/02/xv6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/xv6%E5%AE%9E%E9%AA%8C%E4%B8%80/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="xv6实验一">xv6实验一</span>
             <span class="post-date" title="2025-01-02 16:36:51">2025/01/02</span>
-        </a>
-        
-        
-        <a  class="All 工具 "
-           href="/2017/03/23/index/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="3-hexo使用说明">3-hexo使用说明</span>
-            <span class="post-date" title="2017-03-23 15:13:47">2017/03/23</span>
         </a>
         
         <div id="no-item-tips">
@@ -395,9 +409,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-xv6操作系统实验/xv6实验五" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">test</h1>
+        <h1 class="article-title">xv6实验五</h1>
     
     <div class="article-meta">
         
@@ -415,7 +429,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2025-03-01 14:41:51'>2025-03-01 14:41</time>
+            Created At : <time class="date" title='Updated At: 2025-06-02 16:58:19'>2025-06-02 16:57</time>
         
     </div>
     <div class="article-meta">
@@ -437,7 +451,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E7%BB%84%E4%BC%9A"><span class="toc-text">1、组会</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81dbt%E7%9A%84loader%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB"><span class="toc-text">2、dbt的loader部分代码解读</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-text">基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E9%94%99%E8%AF%AF%E5%BC%82%E5%B8%B8"><span class="toc-text">页面错误异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E6%97%B6%E5%A4%8D%E5%88%B6%EF%BC%88cow%EF%BC%89"><span class="toc-text">写时复制（cow）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9AEliminate-allocation-from-sbrk-easy"><span class="toc-text">实验一：Eliminate allocation from sbrk() (easy)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C2%EF%BC%9A-Lazy-allocation-moderate"><span class="toc-text">实验2： Lazy allocation (moderate)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C3%EF%BC%9ALazytests-and-Usertests"><span class="toc-text">实验3：Lazytests and Usertests</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A9%E5%B1%95"><span class="toc-text">扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#zero-fill-on-demand"><span class="toc-text">zero-fill-on-demand</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -453,14 +467,97 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1、组会"><a href="#1、组会" class="headerlink" title="1、组会"></a>1、组会</h1><p>fpu指令是什么。x86是动态的，动态执行的时候才知道</p>
-<p>mmu，内核帮忙。除0异常。</p>
-<h1 id="2、dbt的loader部分代码解读"><a href="#2、dbt的loader部分代码解读" class="headerlink" title="2、dbt的loader部分代码解读"></a>2、dbt的loader部分代码解读</h1><p>1、ADDRX是指uint64，即64位的无符号整型数据</p>
-<p>2、ENV类中包含了名为Checker的友元类。</p>
-<p>3、FPR类：浮点类型的运算</p>
-<p>4、OPTIONS类：定义了一些操作选项？一些解析函数。</p>
-<p>5、read_from_binary函数，先保留原来的偏移，在根据传进来的offset设置新的偏移。接着就读，然后重新设置偏移。</p>
-<p>6、template关键字的使用。type表示为占位符。支持多种不同的形参设计。具体内容为</p>
+        <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="页面错误异常"><a href="#页面错误异常" class="headerlink" title="页面错误异常"></a>页面错误异常</h3><p>在risc-v中，有三种不同的页面错误：</p>
+<ul>
+<li>加载页面错误</li>
+<li>存储页面错误</li>
+<li>指令页面错误</li>
+</ul>
+<p>当发生这些页面错误的时候，错误信息会保存在scause（页面错误类型）寄存器和stval（错误的虚拟地址）寄存器中，并且引起page fault的程序计数器的值也会记录到sepc中。</p>
+<h3 id="写时复制（cow）"><a href="#写时复制（cow）" class="headerlink" title="写时复制（cow）"></a>写时复制（cow）</h3><p><strong>写时拷贝（Copy On Write）</strong> 使得父子进程在 <code>fork()</code> 时几乎不需要做实际内存的复制，除非有写操作才真正发生复制。</p>
+<p>如果子进程随即调用 <code>exec()</code>，那么父进程的地址空间更是用不着复制给它，直接换成新程序就行了，更进一步节省资源。</p>
+<h3 id="实验一：Eliminate-allocation-from-sbrk-easy"><a href="#实验一：Eliminate-allocation-from-sbrk-easy" class="headerlink" title="实验一：Eliminate allocation from sbrk() (easy)"></a>实验一：Eliminate allocation from sbrk() (easy)</h3><p>第一个实验要求比较简单，删除<code>sbrk(n)</code>系统调用中的页面分配代码（位于***sysproc.c***中的函数<code>sys_sbrk()</code>）。<code>sbrk(n)</code>系统调用将进程的内存大小增加n个字节，然后返回新分配区域的开始部分（即旧的大小）。新的<code>sbrk(n)</code>应该只将进程的大小（<code>myproc()-&gt;sz</code>）增加n，然后返回旧的大小。它不应该分配内存——因此您应该删除对<code>growproc()</code>的调用。</p>
+<p>在sys_sbrk函数中,添加</p>
+<pre><code class="language-C++">  struct proc* p  = myproc();
+  
+  if(n &gt; 0)&#123;
+    p-&gt;sz += n;  
+  &#125; else if(p-&gt;sz + n &gt; 0) &#123;
+    p-&gt;sz = uvmdealloc(p-&gt;pagetable, p-&gt;sz, p-&gt;sz + n);
+  &#125;
+  else
+    return -1;
+</code></pre>
+<h3 id="实验2：-Lazy-allocation-moderate"><a href="#实验2：-Lazy-allocation-moderate" class="headerlink" title="实验2： Lazy allocation (moderate)"></a>实验2： Lazy allocation (moderate)</h3><p>要求：修改***trap.c***中的代码以响应来自用户空间的页面错误，方法是新分配一个物理页面并映射到发生错误的地址，然后返回到用户空间，让进程继续执行。您应该在生成“<code>usertrap(): …</code>”消息的<code>printf</code>调用之前添加代码。你可以修改任何其他xv6内核代码，以使<code>echo hi</code>正常工作。</p>
+<p>分析：实验一只是实现了不分配内存只增加进程的大小的功能，但是在usertrap中会报错，所以需要对usertrap进行修改，让它能够处理这种异常。</p>
+<p>因为可以通过r_scause函数可以获取异常类型，r_stval可以读取引发异常的虚拟地址。还要判断该虚拟地址是否合法：</p>
+<p>在usertrap函数中添加：</p>
+<pre><code class="language-C++">else if(r_scause() == 13 || r_scause() == 15) &#123;
+    uint64 fault_va = r_stval(); // get error virtual address from stval register 
+    char* pa = 0;
+    // determine whether the virtual address is on the stack of the process
+    if(PGROUNDUP(p-&gt;trapframe-&gt;sp) - 1 &lt; fault_va &amp;&amp; fault_va &lt; p-&gt;sz &amp;&amp; (pa =  kalloc()) != 0) &#123;
+      memset(pa, 0, PGSIZE);
+      if(mappages(p-&gt;pagetable, PGROUNDDOWN(fault_va), PGSIZE, (uint64)pa, PTE_R | PTE_W | PTE_X | PTE_U) != 0) &#123;
+        kfree(pa);
+        p-&gt;killed = 1;
+      &#125;
+    &#125;
+  &#125; 
+</code></pre>
+<p>此外还需更改uvmunmap函数，之所以修改这部分代码是因为lazy allocation中首先并未实际分配内存，所以当解除映射关系的时候对于这部分内存要略过，而不是使系统崩溃。这个函数应该是在进程退出的时候被调用。</p>
+<pre><code class="language-c++">  for(a = va; a &lt; va + npages*PGSIZE; a += PGSIZE)&#123;
+    if((pte = walk(pagetable, a, 0)) == 0)
+      // panic(&quot;uvmunmap: walk&quot;);
+      continue;
+    if((*pte &amp; PTE_V) == 0)
+      // panic(&quot;uvmunmap: not mapped&quot;);
+      continue;
+</code></pre>
+<h3 id="实验3：Lazytests-and-Usertests"><a href="#实验3：Lazytests-and-Usertests" class="headerlink" title="实验3：Lazytests and Usertests"></a>实验3：Lazytests and Usertests</h3><p>实验提供了<code>lazytests</code>，这是一个xv6用户程序，它测试一些可能的惰性内存分配器带来压力的特定情况。</p>
+<p>首先更改一下fork的内存拷贝：<code>fork</code>调用了<code>uvmcopy</code>进行内存拷贝，所以修改<code>uvmcopy</code>如下</p>
+<pre><code class="language-C++">int
+uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
+&#123;
+  ...
+  for(i = 0; i &lt; sz; i += PGSIZE)&#123;
+    if((pte = walk(old, i, 0)) == 0)
+      continue;
+    if((*pte &amp; PTE_V) == 0)
+      continue;
+    ...
+  &#125;
+  ...
+&#125;
+</code></pre>
+<p>还需要实现uvmshoulddallocate函数，用来检测该虚拟地址是不是因为惰性分配还没分配和映射地址。uvmlazyallocate函数：给虚拟地址分配内存；</p>
+<pre><code class="language-c++">void lk_uvmlazyallocate(uint64 va) &#123;
+  struct proc* p = myproc();
+  char* pa = kalloc();    //分配物理地址
+  if (pa == 0) &#123;
+      printf(&quot;lazy alloc: out of memory\n&quot;);
+      p-&gt;killed = 1;
+  &#125;
+  else &#123;
+      memset(pa, 0, PGSIZE);
+      if (mappages(p-&gt;pagetable, PGROUNDDOWN(va), PGSIZE, (uint64)pa, PTE_W | PTE_X | PTE_R | PTE_U) != 0) &#123;      
+          printf(&quot;lazy alloc: failed to map page\n&quot;);
+          kfree(pa);
+          p-&gt;killed = 1;
+      &#125;
+  &#125;
+&#125;
+</code></pre>
+<pre><code class="language-C++">int lk_uvmshoulddallocate(uint64 va) &#123;
+  pte_t* pte;
+  struct proc* p = myproc();
+
+  return va &lt; p-&gt;sz                   
+      &amp;&amp; PGROUNDDOWN(va) != r_sp()    
+      &amp;&amp; (((pte = walk(p-&gt;pagetable, va, 0)) == 0) || ((*pte &amp; PTE_V) == 0));    
+&#125;
+</code></pre>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="zero-fill-on-demand"><a href="#zero-fill-on-demand" class="headerlink" title="zero-fill-on-demand"></a>zero-fill-on-demand</h3><p> 在elf文件中，存在一个特殊的段bss（里面的内容全为0），为了节省elf文件文件的大小，所以只记录bss段的大小，不实际分配elf文件的空间。当执行exec时，将elf文件装载到虚拟地址空间，bss段可能分配了多个虚拟的page，但我们为了节省内存，可能会将这些vpage映射到同一个物理页，并设置权限为只读。当用户程序试图去修改时，就会触发page fault并创建新的物理页。</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>
