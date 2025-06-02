@@ -415,7 +415,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2025-06-02 16:45:26'>2025-01-10 16:42</time>
+            Created At : <time class="date" title='Updated At: 2025-06-02 16:51:59'>2025-01-10 16:42</time>
         
     </div>
     <div class="article-meta">
@@ -453,7 +453,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><p><img src="/source/images/image-20250320100759822.png" alt="image-20250320100759822"></p>
+        <h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><p><img src="/source/_posts/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/image-20250320100759822.jpg" alt="image-20250320100759822"></p>
 <p>在Sv39 RISC-V中，使用3级页表进行物理地址和虚拟地址的转换，每一个CPU中都有一个SATP寄存器，它存储着第一级页表的物理地址，L2是第一级页表的索引，第一级页表里面的PTE存储着指向第二级页表的物理地址，以此类推，可以找到最终的物理地址。PPN代表着物理页号。</p>
 <h2 id="xv6VSlinux中的内核地址空间"><a href="#xv6VSlinux中的内核地址空间" class="headerlink" title="xv6VSlinux中的内核地址空间"></a>xv6VSlinux中的内核地址空间</h2><p>xv6内核使用“直接映射”获取内存和内存映射设备寄存器；也就是说，将资源映射到等于物理地址的虚拟地址。例如，内核本身在虚拟地址空间和物理内存中都位于<code>KERNBASE=0x80000000</code>。直接映射简化了读取或写入物理内存的内核代码。例如，当<code>fork</code>为子进程分配用户内存时，分配器返回该内存的物理地址；<code>fork</code>在将父进程的用户内存复制到子进程时直接将该地址用作虚拟地址。对于<strong>蹦床页面</strong>和<strong>内核栈页面</strong>不采用页表映射。</p>
 <p><img src="/source/images/image-20250304104710133.png" alt="image-20250304104710133"></p>
