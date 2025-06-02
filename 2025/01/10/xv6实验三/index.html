@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>test | Hexo</title>
+  <title>xv6实验三 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="test | Hexo">
+  <meta name="description" content="xv6实验三 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
 <meta property="og:type" content="article">
@@ -395,9 +395,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-xv6实验三" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">test</h1>
+        <h1 class="article-title">xv6实验三</h1>
     
     <div class="article-meta">
         
@@ -415,7 +415,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2025-03-01 14:41:51'>2025-03-01 14:41</time>
+            Created At : <time class="date" title='Updated At: 2025-06-02 16:45:26'>2025-01-10 16:42</time>
         
     </div>
     <div class="article-meta">
@@ -437,7 +437,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E7%BB%84%E4%BC%9A"><span class="toc-text">1、组会</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81dbt%E7%9A%84loader%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB"><span class="toc-text">2、dbt的loader部分代码解读</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-text">基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E8%A1%A8"><span class="toc-text">页表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xv6VSlinux%E4%B8%AD%E7%9A%84%E5%86%85%E6%A0%B8%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-text">xv6VSlinux中的内核地址空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C1%EF%BC%9A%E6%89%93%E5%8D%B0%E9%A1%B5%E8%A1%A8"><span class="toc-text">实验1：打印页表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C2%EF%BC%9A-A-kernel-page-table-per-process"><span class="toc-text">实验2： A kernel page table per process</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Simplify-copyin-copyinstr"><span class="toc-text">Simplify copyin&#x2F;copyinstr</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -453,14 +453,232 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1、组会"><a href="#1、组会" class="headerlink" title="1、组会"></a>1、组会</h1><p>fpu指令是什么。x86是动态的，动态执行的时候才知道</p>
-<p>mmu，内核帮忙。除0异常。</p>
-<h1 id="2、dbt的loader部分代码解读"><a href="#2、dbt的loader部分代码解读" class="headerlink" title="2、dbt的loader部分代码解读"></a>2、dbt的loader部分代码解读</h1><p>1、ADDRX是指uint64，即64位的无符号整型数据</p>
-<p>2、ENV类中包含了名为Checker的友元类。</p>
-<p>3、FPR类：浮点类型的运算</p>
-<p>4、OPTIONS类：定义了一些操作选项？一些解析函数。</p>
-<p>5、read_from_binary函数，先保留原来的偏移，在根据传进来的offset设置新的偏移。接着就读，然后重新设置偏移。</p>
-<p>6、template关键字的使用。type表示为占位符。支持多种不同的形参设计。具体内容为</p>
+        <h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><p><img src="/source/images/image-20250320100759822.png" alt="image-20250320100759822"></p>
+<p>在Sv39 RISC-V中，使用3级页表进行物理地址和虚拟地址的转换，每一个CPU中都有一个SATP寄存器，它存储着第一级页表的物理地址，L2是第一级页表的索引，第一级页表里面的PTE存储着指向第二级页表的物理地址，以此类推，可以找到最终的物理地址。PPN代表着物理页号。</p>
+<h2 id="xv6VSlinux中的内核地址空间"><a href="#xv6VSlinux中的内核地址空间" class="headerlink" title="xv6VSlinux中的内核地址空间"></a>xv6VSlinux中的内核地址空间</h2><p>xv6内核使用“直接映射”获取内存和内存映射设备寄存器；也就是说，将资源映射到等于物理地址的虚拟地址。例如，内核本身在虚拟地址空间和物理内存中都位于<code>KERNBASE=0x80000000</code>。直接映射简化了读取或写入物理内存的内核代码。例如，当<code>fork</code>为子进程分配用户内存时，分配器返回该内存的物理地址；<code>fork</code>在将父进程的用户内存复制到子进程时直接将该地址用作虚拟地址。对于<strong>蹦床页面</strong>和<strong>内核栈页面</strong>不采用页表映射。</p>
+<p><img src="/source/images/image-20250304104710133.png" alt="image-20250304104710133"></p>
+<p>右边地址0x1000是boot ROM的物理地址。对主板上电，主板做的第一件事情就是运行存储在boot ROM中的代码，当boot完成之后，会跳转到地址0x80000000，操作系统需要确保那个地址有一些数据能够接着启动操作系统</p>
+<p>当机器刚刚启动时，还没有可用的page，XV6操作系统会设置好内核使用的虚拟地址空间，也就是这张图左边的地址分布</p>
+<p>操作系统启动时，会从地址0x80000000开始运行</p>
+<p>左侧低于PHYSTOP的虚拟地址，与右侧使用的物理地址是一样的（直接映射）</p>
+<p>在完成了虚拟到物理地址的翻译之后，如果得到的物理地址大于0x80000000会走向DRAM芯片，如果得到的物理地址低于0x80000000会走向不同的I&#x2F;O设备</p>
+<p>Kernel text被标为R-X，意味着你可以读它，也可以在这个地址段执行指令，但是你不能向Kernel text写数据。通过设置权限我们可以尽早的发现Bug从而避免Bug。对于Kernel data需要能被写入，所以它的标志位是RW-，但是你不能在这个地址段运行指令，所以它的X标志位未被设置。（所以，kernel text用来存代码，代码可以读，可以运行，但是不能篡改，kernel data用来存数据，数据可以读写，但是不能通过数据伪装代码在kernel中运行）</p>
+<p>Free memory：这段地址存放用户进程的page table（页表），text（代码段）和data（数据段）。如果运行了非常多的用户进程，某个时间点会耗尽这段内存，这个时候fork或者exec会返回错误。当kernel创建了一个进程，针对这个进程的page table也会从Free memory中分配出来。内核会为用户进程的页表分配几个page，并填入PTE。在某个时间点，当内核运行了这个进程，内核会将进程的根页表的地址加载到SATP中。从那个时间点开始，处理器会使用内核为那个进程构建的虚拟地址空间</p>
+<h2 id="实验1：打印页表"><a href="#实验1：打印页表" class="headerlink" title="实验1：打印页表"></a>实验1：打印页表</h2><p>定义一个名为<code>vmprint()</code>的函数。它应当接收一个<code>pagetable_t</code>作为参数，并以下面描述的格式打印该页表。在<code>exec.c</code>中的<code>return argc</code>之前插入<code>if(p-&gt;pid==1) vmprint(p-&gt;pagetable)</code>，以打印第一个进程的页表。</p>
+<pre><code>page table 0x0000000087f6e000
+..0: pte 0x0000000021fda801 pa 0x0000000087f6a000
+.. ..0: pte 0x0000000021fda401 pa 0x0000000087f69000
+.. .. ..0: pte 0x0000000021fdac1f pa 0x0000000087f6b000
+.. .. ..1: pte 0x0000000021fda00f pa 0x0000000087f68000
+.. .. ..2: pte 0x0000000021fd9c1f pa 0x0000000087f67000
+..255: pte 0x0000000021fdb401 pa 0x0000000087f6d000
+.. ..511: pte 0x0000000021fdb001 pa 0x0000000087f6c000
+.. .. ..510: pte 0x0000000021fdd807 pa 0x0000000087f76000
+.. .. ..511: pte 0x0000000020001c0b pa 0x0000000080007000
+</code></pre>
+<p>第一行显示<code>vmprint</code>的参数。之后的每行对应一个PTE，包含树中指向页表页的PTE。每个PTE行都有一些“<code>..</code>”的缩进表明它在树中的深度。每个PTE行显示其在页表页中的PTE索引、PTE比特位以及从PTE提取的物理地址。不要打印无效的PTE。在上面的示例中，顶级页表页具有条目0和255的映射。条目0的下一级只映射了索引0，该索引0的下一级映射了条目0、1和2。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>该实验的实现方式比较简单，主要在vm.c里面实现一个递归函数，用于一次输出每一个pte，用pte &amp; (PTE_R | PTE_W | PTE_X)) &#x3D;&#x3D; 0来判断该节点是否为最后一层的节点。最后在exec.c文件中调用即可。</p>
+<pre><code class="language-C++">/*recursion printing pagetable */
+int _vmprint(pagetable_t pagetable, int depth) &#123;
+  //there are 2^9 = 512 PTES in a page table
+  for(int i = 0; i &lt; 512; i++) &#123;
+    pte_t pte = pagetable[i];
+
+    if(pte &amp; PTE_V) &#123;    //if PTE is effective, printing PTE according to the format.
+      printf(&quot;..&quot;);
+      for(int j = 0; j &lt; depth; ++j) &#123;
+        printf(&quot;..&quot;);
+      &#125;
+      printf(&quot;%d: pte %p pa %p\n&quot;, i, pte, PTE2PA(pte));
+      /*if the page is not leaf node, recursion printing child node*/
+      if((pte &amp; (PTE_R | PTE_W | PTE_X)) == 0) &#123;
+        //this PTE points to a lower-level page table.
+        uint64 child = PTE2PA(pte);
+        _vmprint((pagetable_t) child, depth + 1);
+      &#125;
+    &#125;
+  &#125;
+  return 0;
+&#125;
+
+int             
+vmprint(pagetable_t pagetable) &#123;
+  printf(&quot;page table %p\n&quot;, pagetable);
+  return _vmprint(pagetable, 0);
+&#125;
+</code></pre>
+<h2 id="实验2：-A-kernel-page-table-per-process"><a href="#实验2：-A-kernel-page-table-per-process" class="headerlink" title="实验2： A kernel page table per process"></a>实验2： A kernel page table per process</h2><p>​	该实验主要是要让每一个进程都拥有内核页表。</p>
+<ul>
+<li><p>首先现在proc结构体中创建一个内核态页表。<code>pagetable_t kernerlpgtbl;    // restore kernelpgtbl that process exclusive</code>为每一个进程创建一个内核态页表，所以需要现在proc结构体进行声明。</p>
+</li>
+<li><p>更改一下kvminit函数，使它可以初始化每一个进程的内核态页表，更改之前的kvminit函数只能初始化内核态的页表。</p>
+</li>
+<li><p>在原本的xv6中，kernel&#x2F;proc.c中的procinit函数已经为每个进程分配好了内核栈（在共享空间中），所以先去掉这部分代码：</p>
+<pre><code class="language-c">for(p = proc; p &lt; &amp;proc[NPROC]; p++) &#123;
+      initlock(&amp;p-&gt;lock, &quot;proc&quot;);
+
+      // Allocate a page for the process&#39;s kernel stack.
+      // Map it high in memory, followed by an invalid
+      // guard page.
+      // char *pa = kalloc();
+      // if(pa == 0)
+      //   panic(&quot;kalloc&quot;);
+      // uint64 va = KSTACK((int) (p - proc));
+      // kvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+      // p-&gt;kstack = va;
+  &#125;
+</code></pre>
+</li>
+</ul>
+<p>​	改为在创建进程的时候（kernel&#x2F;proc.c中的allocproc函数），为进程创建独立的内核页表，然后将专属的内核栈固定到内核页表的固定位置，建立映射：</p>
+<pre><code class="language-c"> //create an independnet kernel page tabel for the new process and add the required mappings to the new page table.
+  p-&gt;kernerlpgtbl = lk_kvminit_newpatbl();
+  //alloc a pythsis page, it as kernel stack of new process
+  char* pa = kalloc();
+  if(pa == 0) &#123;
+    panic(&quot;kallo&quot;);
+  &#125;
+  uint64 va = KSTACK((int)0);    //map the kernel stack to a fixed logical address
+  kvmmap(p-&gt;kernerlpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+  p-&gt;kstack = va;
+</code></pre>
+<ul>
+<li><p>现在进程的内核页表创建完成了，但是进程进入内核时，还是会使用全局的内核进程页表，需要在kernel&#x2F;proc.c文件中修改schedule函数，在调度器将CPU交给进程执行之前，加载进程的内核页表到SATP寄存器，切换到进程对应的内核页表。</p>
+<pre><code class="language-C">p-&gt;state = RUNNING;
+c-&gt;proc = p;
+//switch to a process independent kenel page tabel
+w_satp(MAKE_SATP(p-&gt;kernerlpgtbl));
+sfence_vma();
+swtch(&amp;c-&gt;context, &amp;p-&gt;context);
+kvminithart();
+</code></pre>
+</li>
+<li><p>现在，每一个进程都有自己的内核态使用自己的内核页表了。在进程结束后，应该会释放进程独享的页表以及内核栈，回收资源，否则会内存泄漏。原本释放的代码写在函数proc.c&#x2F;freeproc中，在此修改，先释放内核栈再释放内核页表。</p>
+<pre><code class="language-C">  // free process kernel stack 
+  void* kstack_pa = (void*)kvmpa(p-&gt;kernerlpgtbl, p-&gt;kstack);
+  kfree(kstack_pa);
+  p-&gt;kstack = 0;
+  lk_kvm_free_kernelpatabel(p-&gt;kernerlpgtbl);
+  p-&gt;kernerlpgtbl = 0;
+
+void
+kama_kvm_free_kernelpgtbl(pagetable_t pagetable) &#123;
+    for (int i = 0;i &lt; 512;++i) &#123;
+        pte_t pte = pagetable[i];
+        uint64 child = PTE2PA(pte);
+        if ((pte &amp; PTE_V) &amp;&amp; (pte &amp; (PTE_R | PTE_W | PTE_X)) == 0) &#123;      // 如果该页表项指向更低一级的页表
+            kama_kvm_free_kernelpgtbl((pagetable_t)child);                     // 递归释放低一级页表及其页表项
+            pagetable[i] = 0;
+        &#125;
+    &#125;
+    kfree((void*)pagetable);        // 释放当前级别页表所占用空间
+&#125;
+</code></pre>
+<h1 id="Simplify-copyin-copyinstr"><a href="#Simplify-copyin-copyinstr" class="headerlink" title="Simplify copyin&#x2F;copyinstr"></a>Simplify <code>copyin</code>&#x2F;<code>copyinstr</code></h1></li>
+</ul>
+<p><strong>要求</strong>：本实验是实现将用户空间的映射添加到每个进程的内核页表，将进程的页表复制一份到进程的内核页表就好。</p>
+<ul>
+<li>先实现一个复制页表的函数</li>
+</ul>
+<pre><code class="language-C">int lk_kvmvopymapings(pagetable_t src, pagetable_t dst, uint64 start, uint64 sz) &#123;
+
+  pte_t* pte;
+  uint64 pa, i;
+  uint flags;
+
+  for (i = PGROUNDUP(start); i &lt; start + sz; i += PGSIZE) &#123;
+    if ((pte = walk(src, i, 0)) == 0)
+      panic(&quot;kvmcopymappings: pte should exist&quot;);
+    if ((*pte &amp; PTE_V) == 0)
+      panic(&quot;kvmcopymappings: page not present&quot;);
+    pa = PTE2PA(*pte);
+    // `&amp; ~PTE_U` 表示将该页的权限设置为非用户页
+    // 必须设置该权限，因为RISC-V 中内核是无法直接访问用户页的
+    flags = PTE_FLAGS(*pte) &amp; ~PTE_U;
+    if (mappages(dst, i, PGSIZE, pa, flags) != 0)
+        goto err;
+  &#125;
+
+  return 0;
+
+err:
+    //解除目标页表中已映射的页表项
+    uvmunmap(dst, PGROUNDUP(start), (i - PGROUNDUP(start)) / PGSIZE, 0);            
+    return -1;
+&#125;
+</code></pre>
+<ul>
+<li>在实现一个缩减内存的函数，用于内核页表和用户页表内存映射的同步</li>
+</ul>
+<pre><code class="language-C">uint64 
+lk_kvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz) &#123;
+  if(newsz &gt;= oldsz)
+    return oldsz;
+  
+  if(PGROUNDUP(newsz) &lt; PGROUNDUP(oldsz)) &#123;
+    int npages = (PGROUNDUP(oldsz) - PGROUNDUP(newsz)) / PGSIZE;
+    uvmunmap(pagetable, PGROUNDUP(newsz), npages, 0);
+  &#125;
+
+  return newsz;
+
+&#125;
+</code></pre>
+<ul>
+<li>在exec.c函数中加入检查，防止程序内存超过PLIC</li>
+<li>接下来涉及到用户态页表的修改，都要把相应的修改同步到内核页表中，包括：fork()  exec()   growproc()   userinit()  :</li>
+</ul>
+<p>​	1、<strong>修改fork函数</strong>，在创建新的进程时将用户页表复制到内核页表：</p>
+<pre><code class="language-C">// Copy user memory from parent to child.
+  // add call lk_kvmvopymapings function , copy a copy of the nre pro user pagetable mapping to the new pro kernel pagetable; 
+  if(uvmcopy(p-&gt;pagetable, np-&gt;pagetable, p-&gt;sz) &lt; 0 ||
+     lk_kvmvopymapings(np-&gt;pagetable, np-&gt;kernerlpgtbl, 0, p-&gt;sz) &lt; 0)&#123;
+    freeproc(np);
+    release(&amp;np-&gt;lock);
+    return -1;
+  &#125;				
+</code></pre>
+<p>​	2、<strong>修改exec函数</strong>，</p>
+<pre><code class="language-C"> //clear the old map of  program memmroy from the kernel page table, and rebuild the mapping.
+  uvmunmap(p-&gt;kernerlpgtbl, 0, PGROUNDUP(oldsz) / PGSIZE, 0);
+  kama_kvmcopymappings(pagetable, p-&gt;kernerlpgtbl, 0, sz);
+</code></pre>
+<p>​	3、<strong>修改growproc函数</strong></p>
+<pre><code class="language-C">int growproc(int n)
+&#123;
+  uint sz;
+  struct proc *p = myproc();
+
+  sz = p-&gt;sz;
+  if(n &gt; 0)&#123;
+    uint64 newsz;
+    if((newsz = uvmalloc(p-&gt;pagetable, sz, sz + n)) == 0) &#123;
+      return -1;
+    &#125;
+
+    //the mapping of kernel page table synchronous expansion
+      if (lk_kvmvopymapings(p-&gt;pagetable, p-&gt;kernerlpgtbl, sz, n) != 0) &#123;
+        uvmdealloc(p-&gt;pagetable, newsz, sz);
+        return -1;
+    &#125;
+    sz = newsz;
+  &#125; else if(n &lt; 0)&#123;
+    uvmdealloc(p-&gt;pagetable, sz, sz + n);
+    // 内核页表中的映射同步缩小
+    sz = kama_kvmdealloc(p-&gt;kama_kernelpgtbl, sz, sz + n);
+    
+  &#125;
+  p-&gt;sz = sz;
+  return 0;
+&#125;
+</code></pre>
+<p>​	4、<strong>修改userinit函数</strong></p>
+<pre><code class="language-C">//synchronous map of program mem to kernel pro pagetable
+  lk_kvmvopymapings(p-&gt;pagetable, p-&gt;kernerlpgtbl, 0, p-&gt;sz); 
+</code></pre>
+<ul>
+<li>最后按照实验要求去替换copyin和copyinstr函数即可。</li>
+</ul>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>

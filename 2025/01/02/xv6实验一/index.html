@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>test | Hexo</title>
+  <title>xv6实验一 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="test | Hexo">
+  <meta name="description" content="xv6实验一 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
 <meta property="og:type" content="article">
@@ -395,9 +395,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-xv6实验一" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">test</h1>
+        <h1 class="article-title">xv6实验一</h1>
     
     <div class="article-meta">
         
@@ -415,7 +415,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2025-03-01 14:41:51'>2025-03-01 14:41</time>
+            Created At : <time class="date" title='Updated At: 2025-06-02 16:37:54'>2025-01-02 16:36</time>
         
     </div>
     <div class="article-meta">
@@ -437,7 +437,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E7%BB%84%E4%BC%9A"><span class="toc-text">1、组会</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81dbt%E7%9A%84loader%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB"><span class="toc-text">2、dbt的loader部分代码解读</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E5%AE%9E%E7%8E%B0sleep%E5%87%BD%E6%95%B0"><span class="toc-text">1实现sleep函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E5%AE%9E%E7%8E%B0%E7%AE%A1%E9%81%93%E9%80%9A%E4%BF%A1"><span class="toc-text">2实现管道通信</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E9%81%93%E5%9F%BA%E7%A1%80%E7%9B%B8%E5%85%B3"><span class="toc-text">管道基础相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%A4%E4%B8%AA%E7%AE%A1%E9%81%93%E8%BF%9B%E8%A1%8C%E7%88%B6%E5%AD%90%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="toc-text">使用两个管道进行父子进程通信</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3primes%EF%BC%88%E7%AD%9B%E9%80%89%E8%B4%A8%E6%95%B0%EF%BC%89"><span class="toc-text">3primes（筛选质数）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#find%E5%8A%9F%E8%83%BD"><span class="toc-text">find功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs"><span class="toc-text">xargs</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -453,14 +453,404 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1、组会"><a href="#1、组会" class="headerlink" title="1、组会"></a>1、组会</h1><p>fpu指令是什么。x86是动态的，动态执行的时候才知道</p>
-<p>mmu，内核帮忙。除0异常。</p>
-<h1 id="2、dbt的loader部分代码解读"><a href="#2、dbt的loader部分代码解读" class="headerlink" title="2、dbt的loader部分代码解读"></a>2、dbt的loader部分代码解读</h1><p>1、ADDRX是指uint64，即64位的无符号整型数据</p>
-<p>2、ENV类中包含了名为Checker的友元类。</p>
-<p>3、FPR类：浮点类型的运算</p>
-<p>4、OPTIONS类：定义了一些操作选项？一些解析函数。</p>
-<p>5、read_from_binary函数，先保留原来的偏移，在根据传进来的offset设置新的偏移。接着就读，然后重新设置偏移。</p>
-<p>6、template关键字的使用。type表示为占位符。支持多种不同的形参设计。具体内容为</p>
+        <h1 id="1实现sleep函数"><a href="#1实现sleep函数" class="headerlink" title="1实现sleep函数"></a>1实现sleep函数</h1><p>该功能比较简单，直接系统调用即可。</p>
+<pre><code class="language-c++">//user/sleep.c
+#include &quot;kernel/types.h&quot;
+#include &quot;kernel/stat.h&quot;
+#include &quot;user/user.h&quot;
+
+
+int main (int argc, char** argv) &#123;
+    if(argc &lt; 2) &#123;
+        printf(&quot;usage: sleep &lt;ticks&gt;\n&quot;);
+    &#125;
+    sleep(atoi(argv[1]));
+    exit(0);
+&#125;
+</code></pre>
+<h1 id="2实现管道通信"><a href="#2实现管道通信" class="headerlink" title="2实现管道通信"></a>2实现管道通信</h1><h2 id="管道基础相关"><a href="#管道基础相关" class="headerlink" title="管道基础相关"></a>管道基础相关</h2><p>管道是一种最基本的IPC机制，是指不同进程之间如何传递数据。管道是其中最常见的一种机制，允许一个进程的输出作为另一个进程的输入，进而实现数据的共享和传递。管道是内核空间中的一块缓冲区，默认大小为4096字节。调用pipe系统函数即可创建并打开一个管道。</p>
+<p><strong>特性</strong></p>
+<ol>
+<li>其本质是一个伪文件（实为内核缓冲区）。</li>
+<li>由两个文件描述符引用，一个表示读端，一个表示写端。</li>
+<li>规定数据从管道的写端流入管道，从读端流出。</li>
+<li>管道不是普通的文件，不属于某个文件系统，其只存在于内存中，俗称伪文件，不需要占用磁盘空间。</li>
+<li>管道没有名字，只能在具有公共祖先的进程（父进程和子进程，或两个兄弟进程）之间使用</li>
+<li>管道随进程，进程在管道在，进程消失管道对应的端口也关闭，两个进程都消失管道也消失。</li>
+</ol>
+<h2 id="使用两个管道进行父子进程通信"><a href="#使用两个管道进行父子进程通信" class="headerlink" title="使用两个管道进行父子进程通信"></a>使用两个管道进行父子进程通信</h2><pre><code class="language-c++">//user/sleep.c
+#include &quot;kernel/types.h&quot;
+#include &quot;kernel/stat.h&quot;
+#include &quot;user/user.h&quot;
+
+
+int main (int argc, char** argv) &#123;
+    //create two pipeline : pp2c used parent process to child process communication, pc2p used child  process to  parent process communication.
+    int pp2c[2], pc2p[2];
+    pipe(pp2c);
+    pipe(pc2p);
+
+    if(fork() != 0) &#123;   //parent process
+        //parent send a character to the child
+        write(pp2c[1], &quot;.&quot;, 1);
+        close(pp2c[1]);
+
+        //parent read a character from child
+        char buf;
+        
+        read(pc2p[0], &amp;buf, 1);
+        printf(&quot;%d: received pong\n&quot;, getpid());
+
+        //wait child over
+        wait(0);
+
+    &#125;else &#123; //child process
+        //child process read a character from parent
+        char buf;
+        read(pp2c[0], &amp;buf, 1);
+        printf(&quot;%d: received ping\n&quot;, getpid());
+
+        //child send a character to parent
+        write(pc2p[1], &quot;.&quot;, 1);
+        close(pc2p[1]);
+    &#125;
+
+    //close pipe
+    close(pp2c[0]);
+    close(pc2p[0]);
+    exit(0);
+&#125;
+</code></pre>
+<h1 id="3primes（筛选质数）"><a href="#3primes（筛选质数）" class="headerlink" title="3primes（筛选质数）"></a>3primes（筛选质数）</h1><p>题目描述：</p>
+<p><img src="C:\Users\likuan\AppData\Roaming\Typora\typora-user-images\image-20250226103446808.png" alt="image-20250226103446808"></p>
+<p>这里我按题目所描述的那样，将一个进程的子进程称为右邻居，将一个进程的父进程称为左邻居，所以除了父进程，每一个进程都有左邻居，除了最后一个子进程，每一个进程都有右邻居。由于xv6的文件描述符和进程数量有限，所以题目只要求打印2~35之间的质数。</p>
+<p>主进程遍历2~35的整数，通过向管道写入整数，给他的右邻居（子进程）传输这个整数。每一个子进程第一次读取到数字时，这个数字肯定是质数（比如上图第一个子进程接收到的第一个数字是2，第二个子进程接收到的数字是5）。之后每一个子进程收到左邻居传过来的数字n，判断n是不是第一次接收到的数字的倍数，如果是，则这个数字肯定不是质数，如果不是，就传给右邻居。如此递归调用下去。</p>
+<pre><code class="language-C++">// //user/primes
+// #include &quot;kernel/types.h&quot;
+// #include &quot;kernel/stat.h&quot;
+// #include &quot;user/user.h&quot;
+
+// //filter primes function, accept a pipe as parameter
+// void sieve(int pleft[2]) &#123;
+//     //read a int from lesf neighbor
+//     int p;
+//     read(pleft[0], &amp;p, sizeof(p));
+//     if(p == -1) &#123;
+//         exit(0); //if p is -1, express over
+//     &#125;
+//     printf(&quot;prime %d\n&quot;, p);
+
+//     //create a new pipe
+//     int pright[2];
+//     pipe(pright);
+
+//     if(fork() == 0) &#123;     //right neighbor 
+//         close(pright[1]); //the right neighbor does not use the write port of pipe, so close it.
+//         close(pleft[0]); //the right neighbor does not use the read port of pipe, so close it.
+//         sieve(pright);   //recursion calls
+//     &#125; else &#123;
+//         close(pright[0]); //current process does not need the read port of pipe, so close it.
+//         //read a int from left neighbor 
+//         int buf;
+//         while (read(pleft[0], &amp;buf, sizeof(buf) &amp;&amp; buf != -1)) &#123;
+//             if(buf % p != 0) &#123;
+//                 write(pright[1], &amp;buf, sizeof(buf));
+//             &#125;
+//         &#125;
+        
+//         //in time, accept  the -1 from left neighbor, also send a -1 to right neighbor.
+//         buf = -1;
+//         write(pright[1], &amp;buf, sizeof(buf));
+//         wait(0);
+//         exit(0);
+//     &#125;
+// &#125;
+
+// int main(int argc, char** argv) &#123;
+//     //create init pipe
+//     int intput_pipe[2];
+//     pipe(intput_pipe);
+
+//     if(fork() == 0) &#123;// right neighbor
+//         close(intput_pipe[1]);
+//         sieve(intput_pipe);
+//         exit(0);
+//     &#125; else &#123;
+//         close(intput_pipe[0]);
+//         int i;
+//         for ( i = 2; i &lt;= 35; i++)
+//         &#123;
+//             /* code */
+//             write(intput_pipe[1], &amp;i, sizeof(i));
+//         &#125;
+//         //write a end flag
+//         i = -1;
+//         write(intput_pipe[1], &amp;i, sizeof(i));
+//     &#125;
+//     wait(0);
+//     exit(0);
+// &#125;
+
+#include &quot;kernel/types.h&quot;
+#include &quot;user/user.h&quot;
+
+#define RD 0 //pipe的read端
+#define WR 1 //pipe的write端
+
+int main(int argc, char const *argv[]) &#123;
+    char buf = &#39;P&#39;; //用于传送的字节
+
+    int fd_c2p[2]; //子进程-&gt;父进程
+    int fd_p2c[2]; //父进程-&gt;子进程
+    pipe(fd_c2p);
+    pipe(fd_p2c);
+
+    int pid = fork();
+    int exit_status = 0;
+
+    if (pid &lt; 0) &#123;
+        fprintf(2, &quot;fork() error!\n&quot;);
+        close(fd_c2p[RD]);
+        close(fd_c2p[WR]);
+        close(fd_p2c[RD]);
+        close(fd_p2c[WR]);
+        exit(1);
+    &#125; else if (pid == 0) &#123; //子进程
+        close(fd_p2c[WR]);
+        close(fd_c2p[RD]);
+
+        if (read(fd_p2c[RD], &amp;buf, sizeof(char)) != sizeof(char)) &#123;
+            fprintf(2, &quot;child read() error!\n&quot;);
+            exit_status = 1; //标记出错
+        &#125; else &#123;
+            fprintf(1, &quot;%d: received ping\n&quot;, getpid());
+        &#125;
+
+        if (write(fd_c2p[WR], &amp;buf, sizeof(char)) != sizeof(char)) &#123;
+            fprintf(2, &quot;child write() error!\n&quot;);
+            exit_status = 1;
+        &#125;
+
+        close(fd_p2c[RD]);
+        close(fd_c2p[WR]);
+
+        exit(exit_status);
+    &#125; else &#123; //父进程
+        close(fd_p2c[RD]);
+        close(fd_c2p[WR]);
+
+        if (write(fd_p2c[WR], &amp;buf, sizeof(char)) != sizeof(char)) &#123;
+            fprintf(2, &quot;parent write() error!\n&quot;);
+            exit_status = 1;
+        &#125;
+
+        if (read(fd_c2p[RD], &amp;buf, sizeof(char)) != sizeof(char)) &#123;
+            fprintf(2, &quot;parent read() error!\n&quot;);
+            exit_status = 1; //标记出错
+        &#125; else &#123;
+            fprintf(1, &quot;%d: received pong\n&quot;, getpid());
+        &#125;
+
+        close(fd_p2c[WR]);
+        close(fd_c2p[RD]);
+
+        exit(exit_status);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="find功能"><a href="#find功能" class="headerlink" title="find功能"></a>find功能</h2><pre><code class="language-c++">#include &quot;kernel/types.h&quot;
+#include &quot;kernel/fs.h&quot;
+#include &quot;kernel/stat.h&quot;
+#include &quot;user/user.h&quot;
+
+void find(char *path, const char *filename)
+&#123;
+  char buf[512], *p;
+  int fd;
+  struct dirent de;
+  struct stat st;
+
+  if ((fd = open(path, 0)) &lt; 0) &#123;
+    fprintf(2, &quot;find: cannot open %s\n&quot;, path);
+    return;
+  &#125;
+
+  if (fstat(fd, &amp;st) &lt; 0) &#123;
+    fprintf(2, &quot;find: cannot fstat %s\n&quot;, path);
+    close(fd);
+    return;
+  &#125;
+
+  //参数错误，find的第一个参数必须是目录
+  if (st.type != T_DIR) &#123;
+    fprintf(2, &quot;usage: find &lt;DIRECTORY&gt; &lt;filename&gt;\n&quot;);
+    return;
+  &#125;
+
+  if (strlen(path) + 1 + DIRSIZ + 1 &gt; sizeof buf) &#123;
+    fprintf(2, &quot;find: path too long\n&quot;);
+    return;
+  &#125;
+  strcpy(buf, path);
+  p = buf + strlen(buf);
+  *p++ = &#39;/&#39;; //p指向最后一个&#39;/&#39;之后
+  while (read(fd, &amp;de, sizeof de) == sizeof de) &#123;
+    if (de.inum == 0)
+      continue;
+    memmove(p, de.name, DIRSIZ); //添加路径名称
+    p[DIRSIZ] = 0;               //字符串结束标志
+    if (stat(buf, &amp;st) &lt; 0) &#123;
+      fprintf(2, &quot;find: cannot stat %s\n&quot;, buf);
+      continue;
+    &#125;
+    //不要在“.”和“..”目录中递归
+    if (st.type == T_DIR &amp;&amp; strcmp(p, &quot;.&quot;) != 0 &amp;&amp; strcmp(p, &quot;..&quot;) != 0) &#123;
+      find(buf, filename);
+    &#125; else if (strcmp(filename, p) == 0)
+      printf(&quot;%s\n&quot;, buf);
+  &#125;
+
+  close(fd);
+&#125;
+
+int main(int argc, char *argv[])
+&#123;
+  if (argc != 3) &#123;
+    fprintf(2, &quot;usage: find &lt;directory&gt; &lt;filename&gt;\n&quot;);
+    exit(1);
+  &#125;
+  find(argv[1], argv[2]);
+  exit(0);
+&#125;
+</code></pre>
+<p><strong>dirent</strong>结构体用于描述目录中的单个条目，通常在遍历目录时使用。它包含的信息主要是文件或目录的名称和与之相关的一些基本信息。，stat结构体记录文件状态；</p>
+<h2 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h2><pre><code class="language-C++">#include &quot;kernel/types.h&quot;
+#include &quot;user/user.h&quot;
+#include &quot;kernel/param.h&quot;
+
+#define MAXSZ 512
+// 有限状态自动机状态定义
+enum state &#123;
+  S_WAIT,         // 等待参数输入，此状态为初始状态或当前字符为空格
+  S_ARG,          // 参数内
+  S_ARG_END,      // 参数结束
+  S_ARG_LINE_END, // 左侧有参数的换行，例如&quot;arg\n&quot;
+  S_LINE_END,     // 左侧为空格的换行，例如&quot;arg  \n&quot;&quot;
+  S_END           // 结束，EOF
+&#125;;
+
+// 字符类型定义
+enum char_type &#123;
+  C_SPACE,
+  C_CHAR,
+  C_LINE_END
+&#125;;
+
+enum char_type get_char_type(char c)
+&#123;
+  switch (c) &#123;
+  case &#39; &#39;:
+    return C_SPACE;
+  case &#39;\n&#39;:
+    return C_LINE_END;
+  default:
+    return C_CHAR;
+  &#125;
+&#125;
+
+enum state transform_state(enum state cur, enum char_type ct)
+&#123;
+  switch (cur) &#123;
+  case S_WAIT:
+    if (ct == C_SPACE)    return S_WAIT;
+    if (ct == C_LINE_END) return S_LINE_END;
+    if (ct == C_CHAR)     return S_ARG;
+    break;
+  case S_ARG:
+    if (ct == C_SPACE)    return S_ARG_END;
+    if (ct == C_LINE_END) return S_ARG_LINE_END;
+    if (ct == C_CHAR)     return S_ARG;
+    break;
+  case S_ARG_END:
+  case S_ARG_LINE_END:
+  case S_LINE_END:
+    if (ct == C_SPACE)    return S_WAIT;
+    if (ct == C_LINE_END) return S_LINE_END;
+    if (ct == C_CHAR)     return S_ARG;
+    break;
+  default:
+    break;
+  &#125;
+  return S_END;
+&#125;
+
+void clearArgv(char* x_argv[MAXARG], int beg) &#123;  //获取输入中的参数
+    for (int i = beg; i &lt; MAXARG; ++i) &#123;
+        x_argv[i] = 0;
+    &#125;
+&#125;
+
+int main(int argc, char *argv[]) &#123;
+    if (argc - 1 &gt;= MAXARG) &#123;
+        fprintf(2, &quot;xargs: too many arguments.\n&quot;);
+        exit(1);
+    &#125;
+    char lines[MAXSZ];
+    char *p = lines;
+    char *x_argv[MAXARG] = &#123;0&#125;;
+
+    for (int i = 1; i &lt; argc; ++i) &#123;
+        x_argv[i - 1] = argv[i];
+    &#125;
+
+    int arg_beg = 0;          // 参数起始下标
+    int arg_end = 0;          // 参数结束下标
+    int arg_cnt = argc - 1;   // 当前参数索引
+    enum state st = S_WAIT;   // 起始状态置为S_WAIT
+
+    while (st != S_END)
+    &#123;
+        /* code */
+        if (read(0, p, sizeof(char)) != sizeof(char)) &#123; //从标准输入读取字符，直到读取为空为止
+            st = S_END;
+          &#125; else &#123;
+            st = transform_state(st, get_char_type(*p));//转换当字符的状态
+          &#125;
+        
+          if (++arg_end &gt;= MAXSZ) &#123;
+            fprintf(2, &quot;xargs: arguments too long.\n&quot;);
+            exit(1);
+          &#125;
+          switch (st) &#123;
+            case S_WAIT:          // 这种情况下只需要让参数起始指针前移
+              ++arg_beg;
+              break;
+            case S_ARG_END:       // 参数结束，将参数地址存入x_argv数组中
+              x_argv[arg_cnt++] = &amp;lines[arg_beg];
+              arg_beg = arg_end;
+              *p = &#39;\0&#39;;          // 替换为字符串结束符
+              break;
+            case S_ARG_LINE_END:  // 将参数地址存入x_argv数组中同时执行指令
+              x_argv[arg_cnt++] = &amp;lines[arg_beg];
+              // 不加break，因为后续处理同S_LINE_END
+            case S_LINE_END:      // 行结束，则为当前行执行指令
+              arg_beg = arg_end;
+              *p = &#39;\0&#39;;
+              if (fork() == 0) &#123;
+                exec(argv[1], x_argv);
+              &#125;
+              arg_cnt = argc - 1;
+              clearArgv(x_argv, arg_cnt);
+              wait(0);
+              break;
+            default:
+              break;
+            &#125;
+            ++p;  
+    &#125;
+    exit(0);
+&#125;
+</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>

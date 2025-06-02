@@ -6,15 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="3-hexo使用说明 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="1、组会fpu指令是什么。x86是动态的，动态执行的时候才知道 mmu，内核帮忙。除0异常。 2、dbt的loader部分代码解读1、ADDRX是指uint64，即64位的无符号整型数据 2、ENV类中包含了名为Checker的友元类。 3、FPR类：浮点类型的运算 4、OPTIONS类：定义了一些操作选项？一些解析函数。 5、read_from_binary函数，先保留原来的偏移，在根据传进来的">
+<meta name="description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test">
-<meta property="og:url" content="http://example.com/2025/03/01/test/index.html">
+<meta property="og:title" content="xv6源码剖析">
+<meta property="og:url" content="http://example.com/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1、组会fpu指令是什么。x86是动态的，动态执行的时候才知道 mmu，内核帮忙。除0异常。 2、dbt的loader部分代码解读1、ADDRX是指uint64，即64位的无符号整型数据 2、ENV类中包含了名为Checker的友元类。 3、FPR类：浮点类型的运算 4、OPTIONS类：定义了一些操作选项？一些解析函数。 5、read_from_binary函数，先保留原来的偏移，在根据传进来的">
+<meta property="og:description" content="整个xv6系统是用qume这个软件去模拟的。 1、xv系统的启动entry模式切换首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-03-01T06:41:07.000Z">
-<meta property="article:modified_time" content="2025-03-01T06:41:51.247Z">
+<meta property="article:published_time" content="2025-03-09T06:53:18.000Z">
+<meta property="article:modified_time" content="2025-03-09T11:33:34.806Z">
 <meta property="article:author" content="Li Kuan">
 <meta name="twitter:card" content="summary">
 
@@ -213,7 +213,7 @@
     <li>
         <div class="all active" data-rel="All">All
             
-                <small>(3)</small>
+                <small>(7)</small>
             
         </div>
     </li>
@@ -240,7 +240,7 @@
         <div data-rel="操作系统">
             
             操作系统
-            <small>(1)</small>
+            <small>(5)</small>
         </div>
         
     </li>
@@ -261,7 +261,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="3">
+<input type="hidden" id="yelog_site_posts_number" value="7">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -316,6 +316,15 @@
         
         
         <a  class="All 操作系统 "
+           href="/2025/03/09/xv6%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6源码剖析">xv6源码剖析</span>
+            <span class="post-date" title="2025-03-09 14:53:18">2025/03/09</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
            href="/2025/03/01/test/"
            data-tag=""
            data-author="" >
@@ -330,6 +339,33 @@
            data-author="" >
             <span class="post-title" title="Hello World">Hello World</span>
             <span class="post-date" title="2025-02-24 19:29:16">2025/02/24</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/01/10/xv6%E5%AE%9E%E9%AA%8C%E4%B8%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验三">xv6实验三</span>
+            <span class="post-date" title="2025-01-10 16:42:38">2025/01/10</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/01/06/xv6%E5%AE%9E%E9%AA%8C%E4%BA%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验二">xv6实验二</span>
+            <span class="post-date" title="2025-01-06 12:39:09">2025/01/06</span>
+        </a>
+        
+        
+        <a  class="All 操作系统 "
+           href="/2025/01/02/xv6%E5%AE%9E%E9%AA%8C%E4%B8%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="xv6实验一">xv6实验一</span>
+            <span class="post-date" title="2025-01-02 16:36:51">2025/01/02</span>
         </a>
         
         
