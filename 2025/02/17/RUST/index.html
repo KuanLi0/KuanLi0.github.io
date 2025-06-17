@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>xv6源码剖析 | Hexo</title>
+  <title>RUST基础 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="xv6源码剖析 | Hexo">
+  <meta name="description" content="RUST基础 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:type" content="article">
@@ -490,9 +490,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-xv6操作系统实验/xv6源码剖析" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-RUST" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">xv6源码剖析</h1>
+        <h1 class="article-title">RUST基础</h1>
     
     <div class="article-meta">
         
@@ -502,7 +502,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="操作系统">操作系统</a>
+            <a  data-rel="RUST学习">RUST学习</a>
             
         </span>
         
@@ -510,7 +510,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2025-03-09 19:33:34'>2025-03-09 14:53</time>
+            Created At : <time class="date" title='Updated At: 2025-06-17 21:25:05'>2025-02-17 21:23</time>
         
     </div>
     <div class="article-meta">
@@ -532,7 +532,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81xv%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%90%AF%E5%8A%A8"><span class="toc-text">1、xv系统的启动</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#entry%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2"><span class="toc-text">entry模式切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main%E5%92%8Cscheduler%E5%87%BD%E6%95%B0"><span class="toc-text">main和scheduler函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E9%83%A8%E5%88%86"><span class="toc-text">2、虚拟内存部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#kvminit%E5%87%BD%E6%95%B0"><span class="toc-text">kvminit函数</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RUST%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-text">RUST的变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RUST%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="toc-text">RUST变量类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E6%9D%83"><span class="toc-text">所有权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E5%92%8C%E5%80%9F%E7%94%A8"><span class="toc-text">引用和借用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E5%92%8C%E8%A7%A3%E5%BC%95%E7%94%A8"><span class="toc-text">引用和解引用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%88%87%E7%89%87"><span class="toc-text">字符串和切片</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%88%87%E7%89%87"><span class="toc-text">1、切片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">操作字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E7%BB%84"><span class="toc-text">元组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unsafe%E8%AF%AD%E6%B3%95"><span class="toc-text">unsafe语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%9F%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">？运算符</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -548,11 +548,119 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>整个xv6系统是用qume这个软件去模拟的。</p>
-<h1 id="1、xv系统的启动"><a href="#1、xv系统的启动" class="headerlink" title="1、xv系统的启动"></a>1、xv系统的启动</h1><h2 id="entry模式切换"><a href="#entry模式切换" class="headerlink" title="entry模式切换"></a>entry模式切换</h2><p>首先会执行entry.s文件，在entry.s中会让sp指向栈的起始位置，并跳转到start.c文件中的start函数中，在start函数中：<br>主要设置权限模式从Privilege（机器模式）切换到Supervisor模式，将main函数的入口写入pc，禁用页表，可以直接访问物理地址。保存当前CPU核心的hartid到tp寄存器。最后，执行mret指令，切换模式，并跳转到main函数。</p>
-<h2 id="main和scheduler函数"><a href="#main和scheduler函数" class="headerlink" title="main和scheduler函数"></a>main和scheduler函数</h2><p>在main函数中，会进行一系列的初始化，还会初始化第一个用户进程，最后main函数会调用scheduler函数。和entry以及start函数不同，每一个进程都会调用scheduler函数，他会选择一个进程去运行。xv6为每个CPU核心运行一个scheduler()实例，各核心独立选择进程执行。当所有进程都不可运行时（found &#x3D;&#x3D; 0），调度器执行wfi（Wait for Interrupt），使CPU进入低功耗状态，直到中断发生（如定时器中断、设备中断）。</p>
-<h1 id="2、虚拟内存部分"><a href="#2、虚拟内存部分" class="headerlink" title="2、虚拟内存部分"></a>2、虚拟内存部分</h1><p>虚拟内存相关的代码写在kernel&#x2F;vm.c文件按中</p>
-<h2 id="kvminit函数"><a href="#kvminit函数" class="headerlink" title="kvminit函数"></a>kvminit函数</h2><p>kvminit函数主要功能是创建映射关系，将</p>
+        <h1 id="RUST的变量"><a href="#RUST的变量" class="headerlink" title="RUST的变量"></a>RUST的变量</h1><ol>
+<li><p>rust中的变量选择了手动设定变量的可变性</p>
+</li>
+<li><p>变量的命名和其他语言一样，遵循规则就行</p>
+</li>
+<li><p>变量绑定：类似于变量的赋值，这里涉及到了rust的核心原则–<strong>所有权</strong>（任何内存对象都是有主人的），绑定就是把这个对象绑定给一个变量，原来的主任就会丧失该内存对象的所有权。</p>
+</li>
+<li><p>变量的可变性：在默认的情况下变量一般是不可变的，可以使用<strong>mut</strong>关键字进行标识，让变量可变。改变时并不会创建一个新的内存对象。</p>
+</li>
+<li><p>在声明一个变量时，在变量的名字开头可以加上   <strong>_</strong>    ，这样编译器就不会发出警告。</p>
+</li>
+<li><p>常量：用<strong>const</strong>进行修饰，而不用let。从始至终不允许改变，且声明时必须进行类型的说明。</p>
+</li>
+<li><p>变量遮蔽：RUST中允许声明相同名字的变量，但后面的变量会遮蔽掉前面的变量。</p>
+<h1 id="RUST变量类型"><a href="#RUST变量类型" class="headerlink" title="RUST变量类型"></a>RUST变量类型</h1><p>rust变量类型分为基本类型和符合类型</p>
+<p>​    <strong>基本类型</strong>包括</p>
+<ul>
+<li>数值类型: 有符号整数 (<code>i8</code>, <code>i16</code>, <code>i32</code>, <code>i64</code>, <code>isize</code>)、 无符号整数 (<code>u8</code>, <code>u16</code>, <code>u32</code>, <code>u64</code>, <code>usize</code>) 、浮点数 (<code>f32</code>, <code>f64</code>)、以及有理数、复数</li>
+<li>字符串：字符串字面量和字符串切片 <code>&amp;str</code></li>
+<li>布尔类型： <code>true</code>和<code>false</code></li>
+<li>字符类型: 表示单个 Unicode 字符，存储为 4 个字节</li>
+<li>单元类型: 即 <code>()</code> ，其唯一的值也是 <code>()</code></li>
+</ul>
+</li>
+</ol>
+<p>rust中的string类型分配在堆上。它由栈上的堆指针，字符串长度和字符串容量构成。</p>
+<h1 id="所有权"><a href="#所有权" class="headerlink" title="所有权"></a>所有权</h1><ol>
+<li>Rust 中每一个值都被一个变量所拥有，该变量被称为值的所有者</li>
+<li>一个值同时只能被一个变量所拥有，或者说一个值只能拥有一个所有者</li>
+<li>当所有者（变量）离开作用域范围时，这个值将被丢弃(drop)</li>
+</ol>
+<p><strong>rust永不自动创建数据的深拷贝。</strong></p>
+<p><strong>rust中有个copy特性，一个旧的变量在被赋值给其他变量后仍然可用，赋值的过程就是copy的过程。</strong></p>
+<ul>
+<li>所有整数类型，比如 <code>u32</code></li>
+<li>布尔类型，<code>bool</code>，它的值是 <code>true</code> 和 <code>false</code></li>
+<li>所有浮点数类型，比如 <code>f64</code></li>
+<li>字符类型，<code>char</code></li>
+<li>元组，当且仅当其包含的类型也都是 <code>Copy</code> 的时候。比如，<code>(i32, i32)</code> 是 <code>Copy</code> 的，但 <code>(i32, String)</code> 就不是</li>
+<li>不可变引用 <code>&amp;T</code> ，例如<a target="_blank" rel="noopener" href="https://course.rs/basic/ownership/ownership.html#%E8%BD%AC%E7%A7%BB%E6%89%80%E6%9C%89%E6%9D%83">转移所有权</a>中的最后一个例子，<strong>但是注意：可变引用 <code>&amp;mut T</code> 是不可以 Copy的</strong></li>
+</ul>
+<h2 id="引用和借用"><a href="#引用和借用" class="headerlink" title="引用和借用"></a>引用和借用</h2><p>如果仅仅支持通过转移所有权的方式获取一个值，会让程序变的复杂。</p>
+<h3 id="引用和解引用"><a href="#引用和解引用" class="headerlink" title="引用和解引用"></a>引用和解引用</h3><p>用&amp;符号表示引用，用*解引用。引用不会发生所有权的转移。</p>
+<p><img src="C:\Users\likuan\AppData\Roaming\Typora\typora-user-images\image-20241015161059666.png" alt="image-20241015161059666"></p>
+<p>let s &#x3D; &s1;</p>
+<p>如果要利用借用去改变值，需要把变量变成可变的mut。</p>
+<ul>
+<li>同一作用域，特定数据的可变引用只能存在一个，以下代码是错误的例子。原因在于第一个可变借用必须持续到println（最后一次使用的位置）。中间能有其他的s的可变引用的创建。</li>
+</ul>
+<pre><code class="language-rust">let mut s = String::from(&quot;hello&quot;);
+
+let r1 = &amp;mut s;
+let r2 = &amp;mut s;
+println!(&quot;&#123;&#125;, &#123;&#125;&quot;, r1, r2);
+</code></pre>
+<p>我们可以使用{}来限制作用域，</p>
+<pre><code class="language-rust">let mut s = String::from(&quot;hello&quot;);
+
+&#123;
+    let r1 = &amp;mut s;
+
+&#125; // r1 在这里离开了作用域，所以我们完全可以创建一个新的引用
+
+let r2 = &amp;mut s;
+</code></pre>
+<ul>
+<li><strong>可变引用于不可变引用不能同时存在</strong></li>
+</ul>
+<p>​	引用的作用域是持续到它最后一次使用的地方，变量是遇到}结束。NLL优化。</p>
+<h1 id="字符串和切片"><a href="#字符串和切片" class="headerlink" title="字符串和切片"></a>字符串和切片</h1><h2 id="1、切片"><a href="#1、切片" class="headerlink" title="1、切片"></a>1、切片</h2><ul>
+<li>切片允许引用集合中部分连续的元素序列，而不是引用整个集合。语法为【开始索引..终止索引】。其中终止索引比较特殊，他指向最后一个元素的后面一个元素的位置。<strong>索引值必须落在字符的边界位置</strong></li>
+</ul>
+<pre><code class="language-rust">let s = String::from(&quot;hello world&quot;);
+
+let hello = &amp;s[0..5];
+let world = &amp;s[6..11];
+</code></pre>
+<p><img src="C:\Users\likuan\AppData\Roaming\Typora\typora-user-images\image-20241015165136708.png" alt="image-20241015165136708"></p>
+<ul>
+<li>字符串字面量也是切片。&amp;str类型。</li>
+<li>字符串的本质是一个<strong>u8</strong>类型的数组。rust不允许用索引的方式去访问字符串。</li>
+</ul>
+<h2 id="操作字符串"><a href="#操作字符串" class="headerlink" title="操作字符串"></a>操作字符串</h2><ul>
+<li><p>追加（push）</p>
+</li>
+<li><p>插入（insert）</p>
+</li>
+<li><p>替换（replace）</p>
+</li>
+<li><p>删除（delete）</p>
+</li>
+<li><p>连接（+&#x3D;）右边的参数必须是&amp;slice类型。</p>
+</li>
+<li><p>format！</p>
+<pre><code class="language-rust">fn main() &#123;
+    let s1 = &quot;hello&quot;;
+    let s2 = String::from(&quot;rust&quot;);
+    let s = format!(&quot;&#123;&#125; &#123;&#125;!&quot;, s1, s2);
+    println!(&quot;&#123;&#125;&quot;, s);
+&#125;
+</code></pre>
+</li>
+</ul>
+<h2 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h2><p>元组是由多种类型组合到一起形成的，长度固定，顺序固定。</p>
+<p>可以用**.**访问元组。</p>
+<h2 id="unsafe语法"><a href="#unsafe语法" class="headerlink" title="unsafe语法"></a>unsafe语法</h2><p>在rust语言中，unsafe是开发者和编译器之间的约定，用于处理编译器无法验证安全性的底层操作。需要程序员手动的去保证代码的安全性。</p>
+<h2 id="？运算符"><a href="#？运算符" class="headerlink" title="？运算符"></a>？运算符</h2><p> 示例： let policy &#x3D; thread_schedule_policy()?;</p>
+<p><code>?</code> 是 Rust 中的<strong>错误传播运算符</strong>，用来简化对错误 (<code>Result</code> 或 <code>Option</code>) 的处理。</p>
+<p>如果 <code>thread_schedule_policy()</code> 返回一个 <code>Result&lt;T, E&gt;</code> 类型：</p>
+<ul>
+<li>如果是 <code>Ok(T)</code>，<code>?</code> 会提取 <code>Ok</code> 中的值，并将其赋给变量 <code>policy</code>。</li>
+<li>如果是 <code>Err(E)</code>，<code>?</code> 会提前返回错误，不会继续执行当前函数。</li>
+</ul>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>
