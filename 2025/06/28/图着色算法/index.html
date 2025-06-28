@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>llvm_ssa | Hexo</title>
+  <title>图着色算法 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="llvm_ssa | Hexo">
+  <meta name="description" content="图着色算法 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="XV6文件系统xv6文件系统共分为七层 文件描述符：使用文件系统接口抽象了许多unix资源，简化了程序员的工作。 路径名：提供了分层路径名，并通过递归去来解析它们。 目录：将每一个目录实现为一种特殊的索引节点，其内容是一系列目录项，每一个目录项包含一个文件名和索引号。 索引节点：提供单独的文件，每个文件表示一个索引节点，其中包含唯一的索引号（i-number）和一些保存文件数据的块。 日志：允许更">
 <meta property="og:type" content="article">
@@ -538,9 +538,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-llvm-ssa" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-图着色算法" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">llvm_ssa</h1>
+        <h1 class="article-title">图着色算法</h1>
     
     <div class="article-meta">
         
@@ -550,7 +550,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="LLVM">LLVM</a>
+            <a  data-rel="算法">算法</a>
             
         </span>
         
@@ -558,7 +558,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2025-06-17 21:29:04'>2025-04-17 21:28</time>
+            Created At : <time class="date" title='Updated At: 2025-06-28 21:55:15'>2025-06-28 21:52</time>
         
     </div>
     <div class="article-meta">
@@ -580,7 +580,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SSA%E7%9B%B8%E5%85%B3%E5%9F%BA%E7%A1%80"><span class="toc-text">SSA相关基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E9%85%8D%E5%88%86%E6%9E%90"><span class="toc-text">支配分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E7%9D%80%E8%89%B2"><span class="toc-text">图着色</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B6%E7%82%B9%E7%9D%80%E8%89%B2%EF%BC%9A"><span class="toc-text">顶点着色：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E8%A7%A3%E5%86%B3%E5%9B%BE%E7%9D%80%E8%89%B2"><span class="toc-text">贪心算法解决图着色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E5%AF%84%E5%AD%98%E5%99%A8%E5%88%86%E9%85%8D%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E3%80%82"><span class="toc-text">在寄存器分配中的应用。</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -596,19 +596,80 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="SSA相关基础"><a href="#SSA相关基础" class="headerlink" title="SSA相关基础"></a>SSA相关基础</h1><p>定义：static single assignment（静态单赋值），每一个变量都只能被def一次，每一次赋值定义一个新的变量。赋值语句左边变量重新命名，所有对该变量的引用引用新名字。</p>
-<p>优点：同名的变量具有相同的值，变量的引用指向唯一的定义</p>
-<h2 id="支配分析"><a href="#支配分析" class="headerlink" title="支配分析"></a>支配分析</h2><ul>
-<li>控制节点dom： n dominates m （n dom m）&#x3D;&#x3D; 从root到m所有路径都经过n</li>
-<li>直接控制节点idom：如果不存在n’,使n dom n’ ,n’ dom m,则n immediate dominate m</li>
-<li>控制树 dominator tree ：父节点是子节点的直接控制节点</li>
-<li>支配边界 ：对于图节点N，DF（N）是一个集合，该集合包含Z若Z满足以下条件<ul>
-<li>N是Z某个前驱节点的控制节点</li>
-<li>N不是Z的控制节点</li>
+        <h1 id="图着色"><a href="#图着色" class="headerlink" title="图着色"></a>图着色</h1><p>图着色算法是一种将图的顶点或边着色的方法，使得相邻的顶点或边不具有相同颜色的算法。这种算法在解决诸如调度问题、地图着色、寄存器分配等问题中有广泛的应用。</p>
+<h2 id="顶点着色："><a href="#顶点着色：" class="headerlink" title="顶点着色："></a>顶点着色：</h2><p>顶点着色的一个经典算法是Welsh-Powell算法，这是一种贪心算法。他首先将顶点按度数降序排列，然后依次为每个顶点着色，保证当前顶点的颜色不与已着色的相邻顶点颜色相同。这种方法虽然不能保证找到最小色数，但可以在多项式时间找到解。</p>
+<h2 id="贪心算法解决图着色"><a href="#贪心算法解决图着色" class="headerlink" title="贪心算法解决图着色"></a>贪心算法解决图着色</h2><ul>
+<li>将当前未着色的点按度数降序排列。</li>
+<li>将第一个点染成一个未被使用的颜色。</li>
+<li>顺次遍历接下来的点，若当前点和所有与第一个点颜色 <strong>相同</strong> 的点 <strong>不相邻</strong>，则将该点染成与第一个点相同的颜色。</li>
+<li>若仍有未着色的点，则回到步骤 1, 否则结束。</li>
+</ul>
+<p><img src="/images/graph.png" alt="graph"></p>
+<p>假设一个冲突图如上所示，先求出每一个节点的度“</p>
+<table>
+<thead>
+<tr>
+<th>次序</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>点的编号</td>
+<td>4</td>
+<td>5</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>度数</td>
+<td>4</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>第一轮着色，将4号着色</p>
+<p>第二轮着色，将5号节点和2号节点着色</p>
+<p>第三轮着色，将0号节点和1号节点和3号着色</p>
+<p>如下图所示</p>
+<p><img src="/images/%E5%9B%BE%E7%9D%80%E8%89%B2.png" alt="image-20250627141034588"></p>
+<h2 id="在寄存器分配中的应用。"><a href="#在寄存器分配中的应用。" class="headerlink" title="在寄存器分配中的应用。"></a>在寄存器分配中的应用。</h2><ul>
+<li><p>构造冲突图，即上面的图，如果两个变量的live range 有重叠，那么他们之间就有一条冲突边。</p>
+</li>
+<li><p>简化（Simplify）：选择一个度&lt;N的节点，然后把它和它的边从图中移除，把这个点压入栈。</p>
+</li>
+<li><p>溢出候选（Spill Candidate）若所有节点度都 ≥ KKK，则选择一个“最可能”要溢出的节点（通常基于使用频度 &#x2F; 干涉度比值做启发式），也压栈并暂时标记为“溢出”。</p>
+</li>
+<li><p><strong>着色（Select &#x2F; Assign）</strong>：在栈空后按反序弹出节点，为每个节点分配一个不与已着色邻居冲突的颜色；若某个溢出节点确实在此阶段找不到颜色，就要真正地把它“溢出”到内存（生成 load&#x2F;store），然后重做分析。</p>
+</li>
+<li><p>合并（Coalescing）与冻结（Freezing）优化</p>
+<ul>
+<li><strong>合并</strong>：若一条赋值指令 <code>a = b</code> 且 a、b 之间无冲突，可尝试在图上合并这两个节点，减少 move 指令。</li>
+<li><strong>冻结</strong>：若合并会导致图度增大，从而阻碍后续着色，则“冻结”该 move，不再合并。</li>
 </ul>
 </li>
+<li><p>若有真正溢出，修改 IR 插入 load&#x2F;store，回到第 1 步重做。</p>
+</li>
 </ul>
-<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1>
+
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2681123650@qq.com </span>
     </div>
